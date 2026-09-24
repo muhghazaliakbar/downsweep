@@ -11,6 +11,9 @@ public struct DownloadItem: Identifiable, Hashable, Sendable {
     public let dateAdded: Date?
     /// When the item was last opened (`kMDItemLastUsedDate`), or the newest child for folders.
     public let lastUsed: Date?
+    /// When the content last changed; for folders, the newest change anywhere inside.
+    /// A recent value means the item may still be downloading, copying or unpacking.
+    public let contentModified: Date?
     /// Source URLs recorded by the browser (`kMDItemWhereFroms`): usually the file URL, then the referrer.
     public let whereFroms: [URL]
 
@@ -20,6 +23,7 @@ public struct DownloadItem: Identifiable, Hashable, Sendable {
         isDirectory: Bool = false,
         dateAdded: Date?,
         lastUsed: Date? = nil,
+        contentModified: Date? = nil,
         whereFroms: [URL] = []
     ) {
         self.url = url
@@ -27,6 +31,7 @@ public struct DownloadItem: Identifiable, Hashable, Sendable {
         self.isDirectory = isDirectory
         self.dateAdded = dateAdded
         self.lastUsed = lastUsed
+        self.contentModified = contentModified
         self.whereFroms = whereFroms
     }
 

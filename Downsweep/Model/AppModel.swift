@@ -41,6 +41,7 @@ final class AppModel {
     private var watcher: FolderWatcher?
     private var scanTask: Task<Void, Never>?
     private var resumeTask: Task<Void, Never>?
+    private var followUpTask: Task<Void, Never>?
 
     init() {
         settings = AppSettings.load()
@@ -102,6 +103,7 @@ final class AppModel {
             self.result = result
             proposals = result.proposals.filter { !skipped.contains($0.id) }
             lastError = nil
+            scheduleFollowUp(after: result)
         } catch {
             lastError = String(localized: "Couldn’t read \(folder.lastPathComponent): \(error.localizedDescription)")
             return
@@ -121,6 +123,19 @@ final class AppModel {
         scanTask?.cancel()
         scanTask = Task {
             try? await Task.sleep(for: delay)
+            guard !Task.isCancelled else { return }
+            await scan()
+        }
+    }
+
+    /// Folder events alone miss two things: held-back items (too new, or still being written)
+    /// becoming eligible, and lifecycle stages moving on with time. Check back for both.
+    private func scheduleFollowUp(after result: ScanResult) {
+        followUpTask?.cancel()
+        let longest: TimeInterval = 6 * 60 * 60
+        let delay = result.nextReevaluation.map { min($0.timeIntervalSince(result.finishedAt) + 1, longest) } ?? longest
+        followUpTask = Task {
+            try? await Task.sleep(for: .seconds(max(delay, 1)))
             guard !Task.isCancelled else { return }
             await scan()
         }

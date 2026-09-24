@@ -28,6 +28,8 @@ public struct ScanResult: Sendable {
     public let proposals: [Proposal]
     public let installerStatus: [URL: InstallerStatus]
     public let finishedAt: Date
+    /// When an item that was held back (too new, or still being written) becomes eligible.
+    public let nextReevaluation: Date?
 
     public var reclaimableBytes: Int64 { proposals.reduce(0) { $0 + $1.reclaimableBytes } }
 
@@ -95,7 +97,8 @@ public enum SweepPipeline {
             items: items,
             proposals: PolicyEngine.proposals(for: items, context: context),
             installerStatus: installerStatus,
-            finishedAt: now
+            finishedAt: now,
+            nextReevaluation: PolicyEngine.nextReevaluation(for: items, context: context)
         )
     }
 }

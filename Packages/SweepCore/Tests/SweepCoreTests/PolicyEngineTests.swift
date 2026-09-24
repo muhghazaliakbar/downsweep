@@ -11,6 +11,7 @@ private func item(
     added: Double = 60,
     used: Double? = nil,
     size: Int64 = 1_000,
+    modified: Date? = nil,
     from: [String] = []
 ) -> DownloadItem {
     DownloadItem(
@@ -18,6 +19,7 @@ private func item(
         size: size,
         dateAdded: daysAgo(added),
         lastUsed: used.map(daysAgo),
+        contentModified: modified,
         whereFroms: from.compactMap(URL.init(string:))
     )
 }
@@ -232,6 +234,19 @@ private let installedFigma = URL(filePath: "/Applications/Figma.app")
         }
     }
 
+    @Test func refusesFoldersChangedInside() throws {
+        let url = folder.appending(path: "unpacking")
+        try FileManager.default.createDirectory(at: url, withIntermediateDirectories: true)
+        let scanned = try #require(MetadataReader.item(at: url))
+        // Something lands inside after the scan, e.g. an archive still being extracted.
+        let later = url.appending(path: "part.bin")
+        try Data([1]).write(to: later)
+        try FileManager.default.setAttributes([.modificationDate: Date.now.addingTimeInterval(5)], ofItemAtPath: later.path)
+        #expect(throws: ExecutorError.itemChanged(url)) {
+            try FileExecutor().perform(Proposal(item: scanned, action: .tag("Stale"), reason: .stale(idleDays: 40)), reason: "test")
+        }
+    }
+
     @Test func historyRoundTripsAndPrunes() async throws {
         let store = HistoryStore(fileURL: folder.appending(path: "history.json"))
         let fresh = HistoryEntry(date: now, kind: .tag, originalURL: folder, resultURL: nil, bytes: 0, reason: "r")
@@ -240,3 +255,28 @@ private let installedFigma = URL(filePath: "/Applications/Figma.app")
         #expect(await store.load() == [fresh])
     }
 }
+
+@Suite struct SettleTests {
+    @Test func itemStillBeingWrittenIsLeftAlone() {
+        // Old enough to expire, but its content changed 30 seconds ago (e.g. unpacking into a folder).
+        let busy = item("export", added: 90, modified: now.addingTimeInterval(-30))
+        #expect(PolicyEngine.proposal(for: busy, context: PolicyContext(now: now)) == nil)
+
+        let settled = item("export", added: 90, modified: now.addingTimeInterval(-PolicyEngine.settleInterval))
+        #expect(PolicyEngine.proposal(for: settled, context: PolicyContext(now: now)) != nil)
+    }
+
+    @Test func nextReevaluationIsWhenTheFirstHeldBackItemBecomesEligible() {
+        let fresh = item("fresh.pdf", added: 0.5 / 24) // added 30 minutes ago → eligible in 30
+        let busy = item("busy.zip", added: 90, modified: now.addingTimeInterval(-60)) // settles in 60 s
+        let old = item("old.pdf", added: 90)
+        let context = PolicyContext(now: now)
+
+        #expect(PolicyEngine.nextReevaluation(for: [fresh, busy, old], context: context)
+            == now.addingTimeInterval(PolicyEngine.settleInterval - 60))
+        #expect(PolicyEngine.nextReevaluation(for: [fresh, old], context: context)
+            == fresh.dateAdded!.addingTimeInterval(PolicyEngine.gracePeriod))
+        #expect(PolicyEngine.nextReevaluation(for: [old], context: context) == nil)
+    }
+}
+

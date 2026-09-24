@@ -19,10 +19,12 @@ public enum MetadataReader {
 
         var lastUsed = spotlight.flatMap { attribute($0, kMDItemLastUsedDate) as Date? }
         var size = Int64(values.totalFileAllocatedSize ?? values.fileSize ?? 0)
+        var contentModified = values.contentModificationDate
 
         if isDirectory {
             let contents = directorySummary(url)
             size = contents.size
+            contentModified = [contentModified, contents.newestModification].compactMap { $0 }.max()
             lastUsed = [lastUsed, contents.newestModification].compactMap { $0 }.max()
         }
 
@@ -35,6 +37,7 @@ public enum MetadataReader {
             isDirectory: isDirectory,
             dateAdded: dateAdded,
             lastUsed: lastUsed,
+            contentModified: contentModified,
             whereFroms: whereFroms
         )
     }
@@ -57,7 +60,7 @@ public enum MetadataReader {
         }
     }
 
-    private static func directorySummary(_ url: URL) -> (size: Int64, newestModification: Date?) {
+    static func directorySummary(_ url: URL) -> (size: Int64, newestModification: Date?) {
         let keys: [URLResourceKey] = [.totalFileAllocatedSizeKey, .contentModificationDateKey]
         guard let enumerator = FileManager.default.enumerator(at: url, includingPropertiesForKeys: keys) else {
             return (0, nil)

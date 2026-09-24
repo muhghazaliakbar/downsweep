@@ -135,7 +135,7 @@ Pushing a tag like `v0.1.0` runs `.github/workflows/release.yml`, which publishe
 - [ ] Homebrew Cask
 - [ ] Indonesian localization, alongside English
 - [ ] SQLite (GRDB) history store in place of JSON
-- [ ] Wait for file sizes to settle before acting on a fresh download
+- [x] Wait for files to settle before acting: nothing changed in the last 2 minutes, re-checked (folders included) right before acting
 
 ### Later
 
@@ -149,7 +149,7 @@ Have an idea? [Open an issue](https://github.com/muhghazaliakbar/downsweep/issue
 ## Privacy & safety
 
 - Local only. There is no analytics and no network access.
-- Downsweep only acts on items at the top level of the watched folder. Before acting, it re-checks that each file still exists and hasn't changed size since the scan.
+- Downsweep only acts on items at the top level of the watched folder. It leaves alone anything that changed in the last 2 minutes (still downloading, copying or unpacking). Right before acting, it re-checks that each file still exists and hasn't changed size, and that nothing inside a folder has changed, since the scan.
 - Automatic mode stops and asks before moving more than 50 items or 10 GB at once.
 - Downsweep ships without the App Sandbox. It has to run `hdiutil` and `pkgutil` to look inside installers, and those tools don't work reliably from a sandboxed process. It uses the Hardened Runtime.
 

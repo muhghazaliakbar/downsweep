@@ -84,10 +84,15 @@ public struct FileExecutor: Sendable {
         }
     }
 
-    /// The file must still exist with the size seen at scan time, or nothing happens.
+    /// The item must still exist unchanged since the scan, or nothing happens:
+    /// same size for files, no newer change inside for folders.
     private func verifyUnchanged(_ item: DownloadItem) throws {
         guard FileManager.default.fileExists(atPath: item.url.path) else { throw ExecutorError.itemChanged(item.url) }
-        guard !item.isDirectory else { return }
+        if item.isDirectory {
+            let newest = MetadataReader.directorySummary(item.url).newestModification
+            if let newest, newest > (item.contentModified ?? .distantPast) { throw ExecutorError.itemChanged(item.url) }
+            return
+        }
         // URL caches resource values; a stale cache would hide exactly the change we check for.
         var fresh = item.url
         fresh.removeAllCachedResourceValues()
