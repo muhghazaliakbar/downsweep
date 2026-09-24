@@ -77,6 +77,37 @@ DOWNSWEEP_FIXTURES=/tmp/DownsweepFixtures swift test --package-path Packages/Swe
 - Liquid Glass is used only for the navigation and controls layer. That means menu bar tiles, the floating selection bar, toolbar buttons, and the onboarding pager. Content rows stay plain, as the HIG recommends.
 - Glass elements that sit next to each other share a `GlassEffectContainer` so they blend and morph together.
 
+## Roadmap
+
+### v0.1 — first public release
+
+- [x] Lifecycle: new → active → idle → stale (Finder tag) → Trash, with adjustable thresholds
+- [x] Installer detection for DMG, ZIP and PKG, compared against installed app versions
+- [x] Duplicate detection: `name (1).ext` / `name-1.ext`, confirmed by SHA-256
+- [x] Source rules from `kMDItemWhereFroms` (e.g. `mail.google.com` → Attachments)
+- [x] Review window, History with undo, onboarding, Settings
+- [x] Review and Automatic modes, with a safety limit of 50 items or 10 GB per sweep
+- [ ] App icon
+- [ ] Signed and notarized DMG on GitHub Releases
+
+### v1.0
+
+- [ ] Weekly summary notification, with a shareable "cleaned this week" card
+- [ ] Sparkle auto-updates
+- [ ] Homebrew Cask
+- [ ] Indonesian localization, alongside English
+- [ ] SQLite (GRDB) history store in place of JSON
+- [ ] Wait for file sizes to settle before acting on a fresh download
+
+### Later
+
+- [ ] Watch additional folders, starting with Desktop
+- [ ] Shortcuts actions (App Intents), e.g. "Sweep Downloads now"
+- [ ] Companion CLI: `downsweep scan --dry-run`
+- [ ] On-device grouping with Apple Foundation Models, staying 100% local
+
+Have an idea? [Open an issue](https://github.com/muhghazaliakbar/downsweep/issues).
+
 ## Privacy & safety
 
 - Local only. There is no analytics and no network access.
