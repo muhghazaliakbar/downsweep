@@ -15,7 +15,7 @@ jobs:
       TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
       NOTARY_PROFILE: downsweep
       # Signing and publishing need the Developer ID secrets; without them the job only runs the tests
-      # (releases are then made locally, see README → Releasing). Optional steps need their own secrets.
+      # (releases are then made locally, see docs/RELEASING.md). Optional steps need their own secrets.
       HAS_DEVELOPER_ID: ${{ secrets.DEVELOPER_ID_CERTIFICATE_P12 != '' }}
       HAS_SPARKLE_KEY: ${{ secrets.SPARKLE_PRIVATE_KEY != '' }}
       HAS_TAP_TOKEN: ${{ secrets.HOMEBREW_TAP_TOKEN != '' }}

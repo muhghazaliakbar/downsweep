@@ -5,7 +5,7 @@
   Merged into the Info.plist Xcode generates. Sparkle's keys can't be set through build settings.
   Kept outside the Downsweep folder so the synchronized group doesn't copy it as a resource.
 
-  SUPublicEDKey: the public half of the EdDSA key from Sparkle's generate_keys (see README → Releasing).
+  SUPublicEDKey: the public half of the EdDSA key from Sparkle's generate_keys (see docs/RELEASING.md).
   While it's empty, update checks are turned off.
 -->
 <dict>

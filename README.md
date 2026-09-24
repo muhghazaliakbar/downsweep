@@ -1,48 +1,160 @@
+<div align="center">
+
 <img src="docs/icon.png" width="128" alt="Downsweep icon">
 
 # Downsweep
 
-A menu bar app that keeps your Mac's Downloads folder tidy without you writing a single rule.
+**Your Downloads folder, kept tidy without writing a single rule.**
 
-![Review window](docs/review.png)
+A native macOS menu bar app that spots the installers, duplicates and forgotten files piling up in Downloads, and sweeps them away safely.
 
-- **Installers you've already used.** Downsweep looks inside DMG, ZIP and PKG files. If the app they contain is already installed (same version or newer), it suggests moving the installer to the Trash.
-- **Duplicate downloads.** It finds `report (1).pdf` when the file is byte-for-byte identical to `report.pdf`.
-- **Sort by source.** Browsers record where every download came from. Downsweep can move files from `mail.google.com` to Attachments, or files from `github.com` to your code folder.
-- **Stale files.** Files you haven't opened in 30 days get a Finder "Stale" tag. If you still don't open them after another 14 days, Downsweep suggests the Trash.
+[![Latest release](https://img.shields.io/github/v/release/muhghazaliakbar/downsweep?label=release&color=0A84FF)](https://github.com/muhghazaliakbar/downsweep/releases/latest)
+[![CI](https://github.com/muhghazaliakbar/downsweep/actions/workflows/ci.yml/badge.svg)](https://github.com/muhghazaliakbar/downsweep/actions/workflows/ci.yml)
+![macOS 26+](https://img.shields.io/badge/macOS-26%2B-111111?logo=apple)
+[![License: MIT](https://img.shields.io/github/license/muhghazaliakbar/downsweep?color=34C759)](LICENSE)
 
-**Nothing is ever deleted.** Everything goes to the Trash, and every action can be undone from History.
+[**Download**](https://github.com/muhghazaliakbar/downsweep/releases/latest) · [Features](#features) · [How it works](#how-it-works) · [Privacy](#privacy--safety) · [Roadmap](#roadmap)
+
+<br>
+
+<img src="docs/review.png" alt="Downsweep's Review window listing installers, duplicates, files sorted by source, and stale files" width="860">
+
+</div>
+
+## Features
+
+| | |
+| --- | --- |
+| 📦 **Installers you've already used** | Looks inside DMG, ZIP and PKG files. If the app is already installed (same version or newer), the installer can go. |
+| 👯 **Duplicate downloads** | Finds `report (1).pdf` when it's byte-for-byte the same as `report.pdf`, confirmed with SHA-256. |
+| 🧭 **Sort by source** | Browsers record where each download came from. Send `mail.google.com` files to Attachments, `github.com` files to your code folder. |
+| 🕰️ **Stale files** | Not opened in 30 days? It gets a Finder "Stale" tag. Still untouched 14 days later, Downsweep suggests the Trash. |
+| 🗂️ **Review like Finder** | Filter by kind, sort by name, date or size, Quick Look any file, and pin the ones that should never move. |
+| 📊 **Weekly summary** | A Monday notification with what was cleaned, plus a card you can share. |
+
+> [!IMPORTANT]
+> **Nothing is ever deleted.** Everything goes to the Trash, and every action can be undone from History.
 
 ## Install
 
-With [Homebrew](https://brew.sh):
+**Homebrew**
 
 ```bash
 brew install --cask muhghazaliakbar/tap/downsweep
 ```
 
-Or download the DMG from [Releases](https://github.com/muhghazaliakbar/downsweep/releases). Downsweep updates itself from there (Sparkle).
+**Or download** the latest DMG from [Releases](https://github.com/muhghazaliakbar/downsweep/releases/latest) and drag it to Applications.
 
-> **Not notarized yet.** Until the app is signed with a Developer ID, macOS blocks it the first time you open it. Open **System Settings → Privacy & Security** and click **Open Anyway**. Updates after that install without asking again.
+Downsweep updates itself from GitHub Releases (Sparkle). It needs macOS 26 Tahoe or later.
 
-## Requirements
+> [!NOTE]
+> **Not notarized yet.** The first time you open Downsweep, macOS blocks it. Open **System Settings → Privacy & Security** and click **Open Anyway**. Updates install without asking again.
 
-- macOS 26 or later (the UI uses Liquid Glass)
-- Xcode 26 or later to build
+## How it works
 
-## Build
+<img src="docs/popup.png" align="right" width="300" alt="The menu bar popup: space to reclaim, a breakdown by category, and Sweep All">
 
-```bash
-open Downsweep.xcodeproj
+Downsweep lives in the menu bar and watches your Downloads folder. When something lands or changes, it scans the top level of the folder and sorts what it finds into four categories.
+
+The popup shows how much space you can reclaim and where it comes from. **Sweep All** does everything at once. **Review** lets you go item by item.
+
+Choose how hands-off you want to be in Settings:
+
+- **Ask me first** (default): Downsweep suggests, you approve.
+- **Sweep automatically**: suggestions are applied as they appear. Anything over 50 items or 10 GB still waits for you.
+
+Every file follows the same lifecycle, and each step can be adjusted in Settings → Lifecycle:
+
+<br clear="right">
+
+```mermaid
+flowchart LR
+    A([New download]) -->|3 days| B[Active]
+    B -->|not opened for 30 days| C[Stale<br><sub>Finder tag</sub>]
+    C -->|14 more days| D[Trash]
+    B -. opened again .-> B
+    C -. opened again .-> B
 ```
 
-Or from the command line:
+Installers that are already installed and exact duplicates skip the wait: after a one-hour grace period, they're suggested right away.
+
+## Privacy & safety
+
+- 🔒 **Local only.** No analytics, no accounts, and your files never leave your Mac. The only network access is Sparkle checking GitHub for a new version, which you can turn off in Settings → About.
+- 🛡️ **Careful by default.** Only the top level of the watched folder is touched. Anything that changed in the last 2 minutes (still downloading, copying or unpacking) is left alone.
+- ✅ **Checked twice.** Right before acting, each item is re-checked: files must still be the same size, and nothing inside a folder may have changed since the scan.
+- ↩️ **Always reversible.** Items go to the Trash, never straight to deletion, and History can undo them while they're still there.
+
+Downsweep ships without the App Sandbox. It runs `hdiutil` and `pkgutil` to look inside installers, and those tools don't work reliably from a sandboxed process.
+
+## Roadmap
+
+- [ ] Watch more folders, starting with Desktop
+- [ ] Shortcuts actions (App Intents), e.g. "Sweep Downloads now"
+- [ ] Companion CLI: `downsweep scan --dry-run`
+- [ ] On-device grouping with Apple Foundation Models, staying 100% local
+- [ ] Notarized builds (needs a Developer ID certificate)
+
+<details>
+<summary><b>Shipped in 1.0</b></summary>
+
+- Lifecycle with a Finder "Stale" tag, then the Trash, with adjustable thresholds
+- Installer detection for DMG, ZIP and PKG, compared against installed app versions
+- Duplicate detection (`name (1).ext`, `name-1.ext`), confirmed by SHA-256
+- Source rules from the browser's download metadata
+- Review window with kind filter and Finder-style sorting, History with undo, onboarding
+- Ask-first and automatic modes, with a safety limit
+- Waits for files to settle before acting
+- Live scan progress and a paused state in the menu bar
+- Weekly summary notification with a shareable card
+- SQLite history store
+- English and Indonesian
+- Sparkle auto-updates and a Homebrew cask
+
+</details>
+
+Have an idea? [Open an issue](https://github.com/muhghazaliakbar/downsweep/issues).
+
+## Development
+
+You'll need Xcode 26 or later.
 
 ```bash
-xcodebuild -project Downsweep.xcodeproj -scheme Downsweep build
+git clone https://github.com/muhghazaliakbar/downsweep.git
+cd downsweep
+open Downsweep.xcodeproj                       # or: xcodebuild -scheme Downsweep build
+swift test --package-path Packages/SweepCore   # core tests
 ```
 
-## Project layout
+All decision logic lives in `Packages/SweepCore`, which has no UI and is unit-tested. `PolicyEngine` is a pure function from items to suggestions. If you want to change what Downsweep suggests, start there and in its tests.
+
+<details>
+<summary><b>Try it on fake files</b></summary>
+
+Build a fixture folder, then point Downsweep at it in Settings → General → Folder:
+
+```bash
+scripts/make-fixtures.sh /tmp/DownsweepFixtures
+```
+
+Fixtures are brand new, so nothing looks stale yet. Debug builds accept launch arguments (Xcode: *Edit Scheme → Run → Arguments*):
+
+| Argument | Effect |
+| --- | --- |
+| `-DebugClockOffsetDays 40` | Treat "now" as 40 days ahead |
+| `-DebugOpenReview YES` | Open the Review window at launch |
+| `-DebugWeeklySummary YES` | Post the weekly summary notification at launch |
+
+End-to-end test over the fixtures (mounts the DMGs for real):
+
+```bash
+DOWNSWEEP_FIXTURES=/tmp/DownsweepFixtures swift test --package-path Packages/SweepCore --filter FixturePipeline
+```
+
+</details>
+
+<details>
+<summary><b>Project layout</b></summary>
 
 ```
 Downsweep/                 SwiftUI app: menu bar, Review window, onboarding, Settings
@@ -52,164 +164,41 @@ Packages/SweepCore/        All decision logic, UI-free and unit-tested
   Policy/                  PolicyEngine (pure: items → proposals) and SweepPipeline
   Executor/                The only code that touches files: Trash, move, tag, undo
   Watcher/                 FSEvents folder watcher
-  Store/                   Action history (SQLite), weekly summary
-Config/Info.plist          Sparkle feed URL and public key, merged into the generated Info.plist
-scripts/make-fixtures.sh   Builds a fake Downloads folder for development
-scripts/release.sh         Signed + notarized DMG
-scripts/appcast.sh         Signs the DMG for Sparkle and writes appcast.xml
-scripts/cask.sh            Prints the Homebrew cask; update-tap.sh commits it to the tap
-scripts/sync-strings.sh    Pulls new strings into the String Catalogs
-scripts/render-icon-layers.swift  Redraws the app icon's layers
+  Store/                   History (SQLite) and the weekly summary
+Config/Info.plist          Sparkle feed URL and public key
+scripts/                   Fixtures, releases, appcast, Homebrew cask, string catalogs, icon
 ```
 
-`PolicyEngine` is a pure function. If you want to change what Downsweep suggests, start there and in its tests.
+</details>
 
-## Development
+<details>
+<summary><b>Localization</b></summary>
 
-Run the core tests:
+Strings live in String Catalogs (`Localizable.xcstrings`). After adding user-facing text, pull it into the catalogs, then translate:
 
 ```bash
-swift test --package-path Packages/SweepCore
+scripts/sync-strings.sh
 ```
 
-To try the app without touching your real Downloads folder, build a fixture folder and point Downsweep at it (Settings → General → Folder):
+</details>
 
-```bash
-scripts/make-fixtures.sh /tmp/DownsweepFixtures
-```
+<details>
+<summary><b>Design notes</b></summary>
 
-Fixtures are brand new, so nothing looks stale. Debug builds accept launch arguments that pretend time has passed. You can add them in Xcode under *Edit Scheme → Run → Arguments*:
-
-| Argument | Effect |
-| --- | --- |
-| `-DebugClockOffsetDays 40` | Treat "now" as 40 days ahead |
-| `-DebugOpenReview YES` | Open the Review window at launch |
-
-End-to-end test over the fixtures (mounts the DMGs for real):
-
-```bash
-DOWNSWEEP_FIXTURES=/tmp/DownsweepFixtures swift test --package-path Packages/SweepCore --filter FixturePipeline
-```
-
-## Releasing
-
-`scripts/release.sh` archives the app, signs it with Developer ID, builds a DMG, then notarizes and staples it.
-
-One-time setup (requires the paid Apple Developer Program):
-
-1. Create a **Developer ID Application** certificate in Xcode: *Settings → Accounts → Manage Certificates*.
-2. Store notarization credentials in your keychain. The command prompts for an app-specific password, which you create at account.apple.com:
-
-   ```bash
-   xcrun notarytool store-credentials downsweep --apple-id you@example.com --team-id ABCDE12345
-   ```
-
-Then build a release locally:
-
-```bash
-TEAM_ID=ABCDE12345 NOTARY_PROFILE=downsweep scripts/release.sh 0.1.0
-```
-
-`SIGNING=adhoc scripts/release.sh 0.1.0` makes an ad-hoc signed DMG without an Apple account. Gatekeeper warns about it until the app is notarized.
-
-The build number is derived from the version (1.2.3 → 10203), so Sparkle always sees a newer build.
-
-### Releasing without a Developer ID
-
-Until the Developer ID secrets exist, the release workflow only runs the tests. Publish from your Mac instead, with the Sparkle key in your keychain and `gh` signed in:
-
-```bash
-SIGNING=adhoc scripts/release.sh 1.0.0
-scripts/appcast.sh 1.0.0
-gh release create v1.0.0 build/release/Downsweep-1.0.0.dmg build/release/Downsweep-1.0.0.dmg.sha256 build/release/appcast.xml --title "Downsweep 1.0.0"
-UNNOTARIZED=1 scripts/cask.sh 1.0.0 build/release/Downsweep-1.0.0.dmg   # into the tap's Casks/downsweep.rb
-```
-
-### From GitHub Actions
-
-Pushing a tag like `v0.1.0` runs `.github/workflows/release.yml`, which publishes the DMG as a GitHub Release. Before that, add these repository secrets:
-
-| Secret | Value |
-| --- | --- |
-| `APPLE_TEAM_ID` | Your 10-character team ID |
-| `APPLE_ID` | The Apple ID email used for notarization |
-| `APPLE_APP_SPECIFIC_PASSWORD` | App-specific password from account.apple.com |
-| `DEVELOPER_ID_CERTIFICATE_P12` | The Developer ID certificate exported as .p12, then `base64 -i cert.p12` |
-| `DEVELOPER_ID_CERTIFICATE_PASSWORD` | The password you set when exporting the .p12 |
-
-### Auto-updates (Sparkle)
-
-Updates are signed with an EdDSA key. The app only checks for updates when `SUPublicEDKey` in `Config/Info.plist` is set, so builds without it never touch the network.
-
-1. Build the app once so Sparkle is downloaded, then create the key. It's stored in your login keychain, and the command prints the public key:
-
-   ```bash
-   build/DerivedData/SourcePackages/artifacts/sparkle/Sparkle/bin/generate_keys
-   ```
-
-2. Put the public key in `Config/Info.plist` under `SUPublicEDKey` and commit it.
-3. Export the private key and add its contents as the `SPARKLE_PRIVATE_KEY` repository secret, then delete the file:
-
-   ```bash
-   build/DerivedData/SourcePackages/artifacts/sparkle/Sparkle/bin/generate_keys -x sparkle-private-key.txt
-   ```
-
-Each release then uploads a signed `appcast.xml` next to the DMG. The app reads it from `releases/latest/download/appcast.xml`. Keep the private key safe: without it, existing installs can't be updated.
-
-### Homebrew
-
-The cask lives in a tap, [`muhghazaliakbar/homebrew-tap`](https://github.com/muhghazaliakbar/homebrew-tap):
-
-1. Create that repository on GitHub (public, can be empty).
-2. Create a fine-grained token with *Contents: read and write* on that repository only, and add it as the `HOMEBREW_TAP_TOKEN` secret.
-
-Each release then commits `Casks/downsweep.rb` with the new version and checksum. The cask sets `auto_updates true`, so Homebrew leaves updates to Sparkle.
-
-## Design notes
-
-- The UI follows Apple's Human Interface Guidelines for macOS 26. It uses system fonts, SF Symbols, semantic colours and standard controls.
-- Liquid Glass is used only for the navigation and controls layer. That means menu bar tiles, the floating selection bar, toolbar buttons, and the onboarding pager. Content rows stay plain, as the HIG recommends.
+- The UI follows Apple's Human Interface Guidelines for macOS 26: system fonts, SF Symbols, semantic colours and standard controls.
+- Liquid Glass is only used for the navigation and controls layer: menu bar tiles, the floating selection bar, toolbar buttons and the onboarding pager. Content rows stay plain, as the HIG recommends.
 - Glass elements that sit next to each other share a `GlassEffectContainer` so they blend and morph together.
 
-## Roadmap
+</details>
 
-### v0.1 — first public release
+Releasing, Sparkle keys and the Homebrew tap are covered in [docs/RELEASING.md](docs/RELEASING.md).
 
-- [x] Lifecycle: new → active → idle → stale (Finder tag) → Trash, with adjustable thresholds
-- [x] Installer detection for DMG, ZIP and PKG, compared against installed app versions
-- [x] Duplicate detection: `name (1).ext` / `name-1.ext`, confirmed by SHA-256
-- [x] Source rules from `kMDItemWhereFroms` (e.g. `mail.google.com` → Attachments)
-- [x] Review window, History with undo, onboarding, Settings
-- [x] Review and Automatic modes, with a safety limit of 50 items or 10 GB per sweep
-- [x] App icon (Icon Composer, Liquid Glass)
-- [x] Release pipeline: signed, notarized DMG published to GitHub Releases on each `v*` tag
-- [ ] First notarized release (needs a Developer ID certificate, see [Releasing](#releasing))
+## Support
 
-### v1.0
+Downsweep is free and open source. If it saves you some tidying time, you can buy me a coffee:
 
-- [x] Weekly summary notification (Monday 9:00), with a shareable "cleaned this week" card
-- [x] Sparkle auto-updates (feed signed in the release workflow; needs the key set up once, see [Auto-updates](#auto-updates-sparkle))
-- [x] Homebrew Cask in a tap, updated by the release workflow (needs the tap repository, see [Homebrew](#homebrew))
-- [x] Indonesian localization, alongside English
-- [x] SQLite (GRDB) history store in place of JSON, importing v0.1 history automatically
-- [x] Wait for files to settle before acting: nothing changed in the last 2 minutes, re-checked (folders included) right before acting
-
-### Later
-
-- [ ] Watch additional folders, starting with Desktop
-- [ ] Shortcuts actions (App Intents), e.g. "Sweep Downloads now"
-- [ ] Companion CLI: `downsweep scan --dry-run`
-- [ ] On-device grouping with Apple Foundation Models, staying 100% local
-
-Have an idea? [Open an issue](https://github.com/muhghazaliakbar/downsweep/issues).
-
-## Privacy & safety
-
-- Local only. There is no analytics, and your files never leave your Mac. The only network access is Sparkle checking GitHub Releases for a new version (once a day, if you allow it) and downloading an update you accept. Checking can be turned off in Settings → About.
-- Downsweep only acts on items at the top level of the watched folder. It leaves alone anything that changed in the last 2 minutes (still downloading, copying or unpacking). Right before acting, it re-checks that each file still exists and hasn't changed size, and that nothing inside a folder has changed, since the scan.
-- Automatic mode stops and asks before moving more than 50 items or 10 GB at once.
-- Downsweep ships without the App Sandbox. It has to run `hdiutil` and `pkgutil` to look inside installers, and those tools don't work reliably from a sandboxed process. It uses the Hardened Runtime.
+<a href="https://buymeacoffee.com/justghali.dev"><img src="https://img.shields.io/badge/Buy%20me%20a%20coffee-FFDD00?logo=buymeacoffee&logoColor=000&style=for-the-badge" alt="Buy me a coffee"></a>
 
 ## License
 
-MIT
+Released under the [MIT License](LICENSE).
