@@ -10,6 +10,7 @@ struct SettingsView: View {
             Tab("Lifecycle", systemImage: "clock") { LifecycleSettings() }
             Tab("Rules", systemImage: "arrow.triangle.branch") { RuleSettings() }
             Tab("Pinned", systemImage: "pin") { PinnedSettings() }
+            Tab("About", systemImage: "info.circle") { AboutSettings() }
         }
         .scenePadding()
         .frame(width: 560, height: 460)
