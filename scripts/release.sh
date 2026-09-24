@@ -40,7 +40,9 @@ if [[ $signing == developer-id ]]; then
     OTHER_CODE_SIGN_FLAGS=--timestamp
   )
 else
-  sign_settings=(CODE_SIGN_IDENTITY=- CODE_SIGN_STYLE=Manual)
+  # The hardened runtime only allows frameworks from the same team, and an ad-hoc app has none,
+  # so it would refuse to load Sparkle. It's only needed for notarization, which ad-hoc can't get.
+  sign_settings=(CODE_SIGN_IDENTITY=- CODE_SIGN_STYLE=Manual ENABLE_HARDENED_RUNTIME=NO)
 fi
 
 step "Archiving Downsweep $version ($signing)"
@@ -70,6 +72,8 @@ EOF
   mv "$out/export/Downsweep.app" "$app"
 else
   ditto "$archive/Products/Applications/Downsweep.app" "$app"
+  # Re-sign everything inside (Sparkle arrives signed by its own team) with one ad-hoc identity.
+  codesign --force --deep --sign - "$app"
 fi
 
 step "Verifying the app signature"
