@@ -45,14 +45,18 @@ public enum SweepPipeline {
     public static func run(
         folder: URL,
         configuration: SweepConfiguration,
-        now: Date = .now
+        now: Date = .now,
+        progress: @Sendable (ScanProgress) -> Void = { _ in }
     ) async throws -> ScanResult {
+        progress(ScanProgress(phase: .listing))
         let items = try FolderScanner().scan(folder: folder)
 
         var installerStatus: [URL: InstallerStatus] = [:]
         if configuration.detectInstallers {
             let inspector = InstallerInspector(index: InstalledAppIndex.build())
             let installers = items.filter { InstallerInspector.supportedExtensions.contains($0.fileExtension) }
+            var inspected = 0
+            progress(ScanProgress(phase: .inspectingInstallers, completed: 0, total: installers.count))
             // Few at a time: each DMG is a mount.
             for batch in installers.chunked(into: 4) {
                 await withTaskGroup(of: (URL, InstallerStatus?).self) { group in
@@ -61,11 +65,14 @@ public enum SweepPipeline {
                     }
                     for await (url, status) in group {
                         if let status { installerStatus[url] = status }
+                        inspected += 1
+                        progress(ScanProgress(phase: .inspectingInstallers, completed: inspected, total: installers.count))
                     }
                 }
             }
         }
 
+        if configuration.detectDuplicates { progress(ScanProgress(phase: .findingDuplicates)) }
         let duplicates = configuration.detectDuplicates ? DuplicateFinder.duplicates(in: items) : [:]
 
         let context = PolicyContext(
@@ -76,6 +83,7 @@ public enum SweepPipeline {
             duplicates: duplicates,
             now: now
         )
+        progress(ScanProgress(phase: .evaluating))
         return ScanResult(
             folder: folder,
             items: items,

@@ -27,6 +27,8 @@ final class AppModel {
     private(set) var proposals: [Proposal] = []
     private(set) var history: [HistoryEntry] = []
     private(set) var isScanning = false
+    /// Live status of the running scan; `nil` when idle.
+    private(set) var scanProgress: ScanProgress?
     private(set) var pausedUntil: Date?
     private(set) var lastError: String?
 
@@ -71,14 +73,28 @@ final class AppModel {
     func scan() async {
         guard !isScanning else { return }
         isScanning = true
-        defer { isScanning = false }
+        scanProgress = ScanProgress(phase: .listing)
+
+        // A stream keeps updates from the background pipeline in order on the main actor.
+        let (updates, continuation) = AsyncStream.makeStream(of: ScanProgress.self, bufferingPolicy: .bufferingNewest(1))
+        let progressTask = Task {
+            for await update in updates { scanProgress = update }
+        }
+        defer {
+            continuation.finish()
+            progressTask.cancel()
+            isScanning = false
+            scanProgress = nil
+        }
 
         let folder = settings.folderURL
         let configuration = settings.configuration
         let now = DebugOptions.now
         do {
             let result = try await Task.detached(priority: .utility) {
-                try await SweepPipeline.run(folder: folder, configuration: configuration, now: now)
+                try await SweepPipeline.run(folder: folder, configuration: configuration, now: now) {
+                    continuation.yield($0)
+                }
             }.value
             self.result = result
             proposals = result.proposals.filter { !skipped.contains($0.id) }

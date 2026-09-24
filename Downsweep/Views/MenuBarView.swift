@@ -38,6 +38,20 @@ struct MenuBarView: View {
     }
 
     private var header: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            headerRow
+            if let progress = model.scanProgress {
+                ProgressView(value: progress.fractionCompleted)
+                    .progressViewStyle(.linear)
+                    .controlSize(.mini)
+                    .animation(.smooth, value: progress)
+                    .transition(.opacity)
+            }
+        }
+        .animation(.smooth, value: model.isScanning)
+    }
+
+    private var headerRow: some View {
         HStack(spacing: 10) {
             Image(systemName: "arrow.down.circle.fill")
                 .font(.title2)
@@ -49,18 +63,24 @@ struct MenuBarView: View {
                 Text(statusLine)
                     .font(.caption)
                     .foregroundStyle(.secondary)
+                    .contentTransition(.opacity)
+                    .animation(.smooth, value: statusLine)
             }
             Spacer()
-            if model.isScanning {
-                ProgressView()
-                    .controlSize(.small)
+            if let progress = model.scanProgress {
+                Text(progress.percentText)
+                    .font(.caption)
+                    .monospacedDigit()
+                    .foregroundStyle(.secondary)
+                    .contentTransition(.numericText())
+                    .animation(.smooth, value: progress)
             }
         }
     }
 
     private var statusLine: String {
         if model.isPaused { return String(localized: "Paused for 24 hours") }
-        if model.isScanning { return String(localized: "Scanning \(model.settings.folderURL.lastPathComponent)…") }
+        if let progress = model.scanProgress { return progress.statusText }
         return model.settings.mode == .automatic
             ? String(localized: "Sweeping automatically")
             : String(localized: "Review mode")

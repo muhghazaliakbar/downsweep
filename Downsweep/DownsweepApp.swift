@@ -1,4 +1,5 @@
 import SwiftUI
+import SweepCore
 
 enum WindowID {
     static let review = "review"
@@ -14,7 +15,7 @@ struct DownsweepApp: App {
             MenuBarView()
                 .environment(model)
         } label: {
-            MenuBarLabel(pendingCount: model.proposals.count)
+            MenuBarLabel(pendingCount: model.proposals.count, scanProgress: model.scanProgress)
         }
         .menuBarExtraStyle(.window)
 
@@ -43,9 +44,21 @@ struct DownsweepApp: App {
 
 private struct MenuBarLabel: View {
     let pendingCount: Int
+    let scanProgress: ScanProgress?
 
     var body: some View {
-        if pendingCount > 0 {
+        if let scanProgress {
+            // Menu bar labels are rendered as static images, so progress is shown through the
+            // symbol's variable value rather than a symbol effect.
+            Label {
+                Text(scanProgress.percentText)
+                    .monospacedDigit()
+            } icon: {
+                Image(systemName: "timelapse", variableValue: scanProgress.fractionCompleted)
+            }
+            .labelStyle(.titleAndIcon)
+            .accessibilityLabel(Text("Downsweep: \(scanProgress.statusText)"))
+        } else if pendingCount > 0 {
             Label("\(pendingCount)", systemImage: "arrow.down.circle.fill")
                 .labelStyle(.titleAndIcon)
         } else {
