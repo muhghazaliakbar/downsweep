@@ -4,10 +4,12 @@ import SweepCore
 /// A content-layer row. Glass is reserved for controls floating above content, so rows stay plain.
 struct ProposalRow: View {
     let proposal: Proposal
+    /// Date Added or Date Last Opened, whichever the list is sorted by.
+    var date: Date?
 
     var body: some View {
         HStack(spacing: 12) {
-            FileIcon(url: proposal.item.url)
+            FileIcon(url: proposal.item.url, isDirectory: proposal.item.isDirectory)
                 .frame(width: 32, height: 32)
 
             VStack(alignment: .leading, spacing: 2) {
@@ -36,6 +38,12 @@ struct ProposalRow: View {
                 .font(.caption)
                 .foregroundStyle(proposal.reason.category.tint)
                 .frame(minWidth: 110, alignment: .leading)
+
+            Text(date?.formatted(date: .abbreviated, time: .omitted) ?? "—")
+                .font(.callout)
+                .monospacedDigit()
+                .foregroundStyle(.secondary)
+                .frame(minWidth: 96, alignment: .trailing)
 
             Text(proposal.item.size.fileSize)
                 .font(.callout)

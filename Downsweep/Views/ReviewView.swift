@@ -43,16 +43,21 @@ private struct ProposalListView: View {
     @Environment(AppModel.self) private var model
     let section: ReviewSection
 
+    @AppStorage("reviewSort") private var sort: ReviewSort = .dateAdded
+    @AppStorage("reviewSortAscending") private var ascending = false
     @State private var selection: Set<URL> = []
     @State private var previewURL: URL?
 
-    private var proposals: [Proposal] { model.proposals(in: section) }
-
     var body: some View {
-        content
+        let all = model.proposals(in: section)
+        let kinds = Dictionary(all.map { ($0.id, FileKind(item: $0.item)) }, uniquingKeysWith: { a, _ in a })
+        let filtered = model.reviewKindFilter.map { filter in all.filter { kinds[$0.id] == filter } } ?? all
+        let rows = sort.sorted(filtered, ascending: ascending)
+
+        content(rows: rows, isSectionEmpty: all.isEmpty)
             .navigationTitle(section.title)
-            .navigationSubtitle(subtitle)
-            .toolbar { toolbar }
+            .navigationSubtitle(subtitle(rows))
+            .toolbar { toolbar(rows: rows, kindCounts: Dictionary(kinds.values.map { ($0, 1) }, uniquingKeysWith: +)) }
             .overlay(alignment: .bottom) {
                 if !selection.isEmpty {
                     SelectionBar(
@@ -66,12 +71,14 @@ private struct ProposalListView: View {
                 }
             }
             .animation(.smooth(duration: 0.3), value: selection.isEmpty)
-            .quickLookPreview($previewURL, in: proposals.map(\.item.url))
+            .quickLookPreview($previewURL, in: rows.map(\.item.url))
+            // Hidden rows shouldn't stay selected and be swept by accident.
+            .onChange(of: model.reviewKindFilter) { selection.removeAll() }
     }
 
     @ViewBuilder
-    private var content: some View {
-        if proposals.isEmpty {
+    private func content(rows: [Proposal], isSectionEmpty: Bool) -> some View {
+        if isSectionEmpty {
             ContentUnavailableView {
                 Label("All Swept", systemImage: "checkmark.seal")
             } description: {
@@ -83,21 +90,30 @@ private struct ProposalListView: View {
                 .buttonStyle(.glass)
                 .disabled(model.isScanning)
             }
+        } else if rows.isEmpty, let filter = model.reviewKindFilter {
+            ContentUnavailableView {
+                Label("No \(filter.title)", systemImage: filter.symbol)
+            } description: {
+                Text("Nothing of this kind needs your attention here.")
+            } actions: {
+                Button("Show All Kinds") { model.reviewKindFilter = nil }
+                    .buttonStyle(.glass)
+            }
         } else {
             List(selection: $selection) {
                 if section == .all {
                     ForEach(ProposalCategory.allCases) { category in
-                        let rows = proposals.filter { $0.reason.category == category }
-                        if !rows.isEmpty {
+                        let categoryRows = rows.filter { $0.reason.category == category }
+                        if !categoryRows.isEmpty {
                             Section {
-                                ForEach(rows) { ProposalRow(proposal: $0) }
+                                ForEach(categoryRows, content: row)
                             } header: {
                                 Label(category.title, systemImage: category.symbol)
                             }
                         }
                     }
                 } else {
-                    ForEach(proposals) { ProposalRow(proposal: $0) }
+                    ForEach(rows, content: row)
                 }
             }
             .contextMenu(forSelectionType: URL.self) { ids in
@@ -121,26 +137,85 @@ private struct ProposalListView: View {
         }
     }
 
-    private var subtitle: String {
-        proposals.isEmpty ? "" : String(AttributedString(localized: "^[\(proposals.count) item](inflect: true) · \(model.bytes(in: section).fileSize)").characters)
+    private func row(_ proposal: Proposal) -> ProposalRow {
+        ProposalRow(proposal: proposal, date: sort.displayedDate(for: proposal.item))
+    }
+
+    private func subtitle(_ rows: [Proposal]) -> String {
+        guard !rows.isEmpty else { return "" }
+        let bytes = rows.reduce(0) { $0 + $1.reclaimableBytes }
+        return String(AttributedString(localized: "^[\(rows.count) item](inflect: true) · \(bytes.fileSize)").characters)
     }
 
     @ToolbarContentBuilder
-    private var toolbar: some ToolbarContent {
+    private func toolbar(rows: [Proposal], kindCounts: [FileKind: Int]) -> some ToolbarContent {
+        @Bindable var model = model
+        ToolbarItem {
+            Menu {
+                Picker("Kind", selection: $model.reviewKindFilter) {
+                    Label("All Kinds", systemImage: "square.grid.2x2").tag(FileKind?.none)
+                    Divider()
+                    ForEach(FileKind.allCases.filter { kindCounts[$0] != nil }) { kind in
+                        Label("\(kind.title) (\(kindCounts[kind] ?? 0))", systemImage: kind.symbol)
+                            .tag(FileKind?.some(kind))
+                    }
+                }
+                .pickerStyle(.inline)
+            } label: {
+                Label(
+                    model.reviewKindFilter?.title ?? String(localized: "Kind"),
+                    systemImage: model.reviewKindFilter == nil
+                        ? "line.3.horizontal.decrease.circle"
+                        : "line.3.horizontal.decrease.circle.fill"
+                )
+            }
+            .help("Show only one kind of item, such as images or folders")
+        }
+        ToolbarItem {
+            Menu {
+                Picker("Sort By", selection: Binding(
+                    get: { sort },
+                    set: { newSort in
+                        sort = newSort
+                        ascending = newSort.defaultAscending
+                    }
+                )) {
+                    ForEach(ReviewSort.allCases) { Text($0.title).tag($0) }
+                }
+                .pickerStyle(.inline)
+                Picker("Order", selection: $ascending) {
+                    Text(sort.orderTitle(ascending: true)).tag(true)
+                    Text(sort.orderTitle(ascending: false)).tag(false)
+                }
+                .pickerStyle(.inline)
+            } label: {
+                Label("Sort By", systemImage: "arrow.up.arrow.down")
+            }
+            .help("Sort by \(sort.title), \(sort.orderTitle(ascending: ascending))")
+        }
+        ToolbarSpacer(.fixed)
         ToolbarItem {
             Button("Scan Again", systemImage: "arrow.clockwise") {
                 Task { await model.scan() }
             }
             .disabled(model.isScanning)
+            .help("Check the folder again for new suggestions")
         }
         ToolbarSpacer(.fixed)
         ToolbarItem {
-            Button("Sweep All", systemImage: "sparkles") {
-                run { await model.apply(proposals) }
+            // With a filter on, only what's shown gets swept, and the button says so.
+            Button(
+                model.reviewKindFilter.map { String(localized: "Sweep \($0.title)") } ?? String(localized: "Sweep All"),
+                systemImage: "sparkles"
+            ) {
+                run { await model.apply(rows) }
             }
             .labelStyle(.titleAndIcon)
             .buttonStyle(.glassProminent)
-            .disabled(proposals.isEmpty)
+            .disabled(rows.isEmpty)
+            .help(model.reviewKindFilter == nil
+                ? "Do the suggested action for every item in this list. You can undo from History."
+                : "Do the suggested action for every item shown by the current filter. Hidden items aren’t touched. You can undo from History.")
         }
     }
 

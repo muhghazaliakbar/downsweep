@@ -20,6 +20,8 @@ final class AppModel {
     }
 
     var reviewSection: ReviewSection = .all
+    /// Review list filter by Finder-style kind; `nil` shows everything. Kept across sidebar sections.
+    var reviewKindFilter: FileKind?
     /// Set when automatic mode hits the safety limit; the menu bar asks before continuing.
     var pendingConfirmation: [Proposal]?
 

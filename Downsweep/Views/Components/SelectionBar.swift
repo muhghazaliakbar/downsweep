@@ -16,18 +16,20 @@ struct SelectionBar: View {
                     .padding(.horizontal, 16)
                     .padding(.vertical, 9)
                     .glassEffect()
+                    .help("Items selected in the list. Shift- or Command-click to select more.")
 
                 Button("Pin", systemImage: "pin", action: pin)
                     .buttonStyle(.glass)
-                    .help("Never suggest these items again")
+                    .help("Keep these items where they are. Downsweep won’t suggest them again; unpin them in Settings.")
 
                 Button("Skip", systemImage: "forward", action: skip)
                     .buttonStyle(.glass)
-                    .help("Hide until next launch")
+                    .help("Hide these suggestions for now. Nothing is changed; they come back the next time Downsweep starts.")
 
                 Button("Apply", systemImage: "sparkles", action: apply)
                     .buttonStyle(.glassProminent)
                     .keyboardShortcut(.return, modifiers: .command)
+                    .help("Do the suggested action for each selected item: move it to the Trash, move it to a folder, or tag it. You can undo from History. (⌘↩)")
             }
             .controlSize(.large)
         }
