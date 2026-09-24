@@ -1928,6 +1928,16 @@
         }
       }
     },
+    "Tag only": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hanya diberi tag"
+          }
+        }
+      }
+    },
     "Tagged": {
       "localizations": {
         "id": {

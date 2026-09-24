@@ -26,6 +26,8 @@ final class AppModel {
     var pendingConfirmation: [Proposal]?
 
     private(set) var result: ScanResult?
+    /// Wall-clock time of the last finished scan (the scan's own date can be shifted in debug builds).
+    private(set) var lastChecked: Date?
     private(set) var proposals: [Proposal] = []
     private(set) var history: [HistoryEntry] = []
     private(set) var isScanning = false
@@ -103,7 +105,9 @@ final class AppModel {
         // A stream keeps updates from the background pipeline in order on the main actor.
         let (updates, continuation) = AsyncStream.makeStream(of: ScanProgress.self, bufferingPolicy: .bufferingNewest(1))
         let progressTask = Task {
-            for await update in updates { scanProgress = update }
+            // A fast scan can finish before its last update is delivered; drop updates that
+            // arrive after the scan has ended, or the UI would stay stuck on "scanning".
+            for await update in updates where isScanning { scanProgress = update }
         }
         defer {
             continuation.finish()
@@ -122,6 +126,7 @@ final class AppModel {
                 }
             }.value
             self.result = result
+            lastChecked = .now
             proposals = result.proposals.filter { !skipped.contains($0.id) }
             lastError = nil
             scheduleFollowUp(after: result)

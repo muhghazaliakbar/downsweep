@@ -201,7 +201,7 @@ struct MenuBarView: View {
         HStack(spacing: 6) {
             Label(model.settings.folderURL.lastPathComponent, systemImage: "folder")
             Spacer()
-            if let finished = model.result?.finishedAt {
+            if let finished = model.lastChecked {
                 Text("Checked \(finished, format: .relative(presentation: .named, unitsStyle: .abbreviated))")
             }
         }
@@ -288,7 +288,8 @@ private struct CategoryCard: View {
                         .font(.callout.weight(.semibold))
                         .lineLimit(1)
                         .minimumScaleFactor(0.8)
-                    Text(isEmpty ? String(localized: "All clear") : bytes.fileSize)
+                    // Tagging frees no space, so a size of zero would read oddly.
+                    Text(isEmpty ? String(localized: "All clear") : bytes > 0 ? bytes.fileSize : String(localized: "Tag only"))
                         .font(.caption)
                         .monospacedDigit()
                         .foregroundStyle(.secondary)
