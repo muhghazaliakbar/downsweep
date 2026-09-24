@@ -103,5 +103,6 @@ if [[ $signing == developer-id ]]; then
   spctl --assess --type open --context context:primary-signature --verbose=2 "$dmg"
 fi
 
-shasum -a 256 "$dmg" | tee "$dmg.sha256"
+# File name only, so `shasum -c` works wherever the DMG is downloaded.
+(cd "$out" && shasum -a 256 "${dmg:t}") | tee "$dmg.sha256"
 step "Done: $dmg"
