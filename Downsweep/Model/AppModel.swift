@@ -40,6 +40,7 @@ final class AppModel {
     private let store = HistoryStore.applicationSupport()
     private var watcher: FolderWatcher?
     private var scanTask: Task<Void, Never>?
+    private var resumeTask: Task<Void, Never>?
 
     init() {
         settings = AppSettings.load()
@@ -188,7 +189,19 @@ final class AppModel {
     }
 
     func togglePause() {
-        pausedUntil = isPaused ? nil : Date.now.addingTimeInterval(24 * 60 * 60)
+        resumeTask?.cancel()
+        guard !isPaused else {
+            pausedUntil = nil
+            return
+        }
+        let until = Date.now.addingTimeInterval(24 * 60 * 60)
+        pausedUntil = until
+        // Clear the state when the pause runs out, so the menu bar stops showing it.
+        resumeTask = Task {
+            try? await Task.sleep(for: .seconds(until.timeIntervalSinceNow))
+            guard !Task.isCancelled else { return }
+            pausedUntil = nil
+        }
     }
 
     func dismissError() { lastError = nil }

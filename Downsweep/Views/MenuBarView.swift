@@ -20,6 +20,11 @@ struct MenuBarView: View {
 
             summary
 
+            if let pausedUntil = model.pausedUntil, model.isPaused {
+                PausedBanner(until: pausedUntil)
+                    .transition(.move(edge: .top).combined(with: .opacity))
+            }
+
             if let pending = model.pendingConfirmation {
                 SafetyBanner(proposals: pending)
             } else if let error = model.lastError {
@@ -46,6 +51,7 @@ struct MenuBarView: View {
         .padding(16)
         .frame(width: 360)
         .animation(.smooth, value: model.isScanning)
+        .animation(.smooth, value: model.isPaused)
     }
 
     // MARK: - Header
@@ -115,7 +121,7 @@ struct MenuBarView: View {
 
     private var statusLine: String {
         if let progress = model.scanProgress { return progress.statusText }
-        if model.isPaused { return String(localized: "Paused for 24 hours") }
+        if model.isPaused { return String(localized: "Paused") }
         return model.settings.mode == .automatic
             ? String(localized: "Sweeping automatically")
             : String(localized: "Review mode")
@@ -289,6 +295,37 @@ private struct CategoryCard: View {
         .help(isEmpty
             ? "Nothing in \(category.title) right now"
             : "Review \(count) items in \(category.title)")
+    }
+}
+
+private struct PausedBanner: View {
+    @Environment(AppModel.self) private var model
+    let until: Date
+
+    var body: some View {
+        HStack(spacing: 10) {
+            Image(systemName: "pause.circle.fill")
+                .font(.title2)
+                .foregroundStyle(.orange)
+                .symbolEffect(.pulse, options: .repeating)
+            VStack(alignment: .leading, spacing: 1) {
+                Text("Paused until \(until, format: .dateTime.weekday(.abbreviated).hour().minute())")
+                    .font(.callout.weight(.semibold))
+                Text("Nothing is swept automatically.")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            Spacer(minLength: 8)
+            Button("Resume", systemImage: "play.fill") { model.togglePause() }
+                .buttonStyle(.glassProminent)
+                .tint(.orange)
+                .controlSize(.small)
+                .help("Resume sweeping now")
+        }
+        .padding(12)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .glassEffect(.regular.tint(.orange.opacity(0.18)), in: .rect(cornerRadius: 14))
     }
 }
 

@@ -15,7 +15,7 @@ struct DownsweepApp: App {
             MenuBarView()
                 .environment(model)
         } label: {
-            MenuBarLabel(pendingCount: model.proposals.count, scanProgress: model.scanProgress)
+            MenuBarLabel(pendingCount: model.proposals.count, scanProgress: model.scanProgress, isPaused: model.isPaused)
         }
         .menuBarExtraStyle(.window)
 
@@ -45,9 +45,14 @@ struct DownsweepApp: App {
 private struct MenuBarLabel: View {
     let pendingCount: Int
     let scanProgress: ScanProgress?
+    let isPaused: Bool
 
     var body: some View {
-        if let scanProgress {
+        if isPaused, scanProgress == nil {
+            // Paused wins over the pending count: nothing will be swept until it's resumed.
+            Image(nsImage: MenuBarIcon.paused)
+                .accessibilityLabel(Text("Downsweep: paused"))
+        } else if let scanProgress {
             // Menu bar labels are rendered as static images, so progress is drawn into the icon
             // (specks light up) rather than animated with a symbol effect.
             Label {
