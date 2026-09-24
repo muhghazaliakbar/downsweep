@@ -11,6 +11,7 @@ enum AboutLinks {
 
 struct AboutSettings: View {
     @Environment(\.openURL) private var openURL
+    @Environment(Updater.self) private var updater
 
     private var version: String {
         let info = Bundle.main.infoDictionary
@@ -36,6 +37,9 @@ struct AboutSettings: View {
                     .foregroundStyle(.secondary)
                     .monospacedDigit()
                     .textSelection(.enabled)
+                if updater.isAvailable {
+                    UpdateControls()
+                }
                 Text("Keeps your Downloads folder tidy, without rules to write.\nNothing is deleted: everything goes to the Trash and can be undone.")
                     .font(.callout)
                     .foregroundStyle(.secondary)
@@ -76,6 +80,23 @@ struct AboutSettings: View {
         Button(title, systemImage: systemImage) { openURL(url) }
             .buttonStyle(.glass)
             .help(help)
+    }
+}
+
+/// Manual check plus the automatic-check preference, shown only in builds that can update.
+private struct UpdateControls: View {
+    @Environment(Updater.self) private var updater
+
+    var body: some View {
+        @Bindable var updater = updater
+        HStack(spacing: 12) {
+            Button("Check for Updates…") { updater.checkForUpdates() }
+                .disabled(!updater.canCheckForUpdates)
+            Toggle("Check automatically", isOn: $updater.automaticallyChecks)
+                .toggleStyle(.checkbox)
+                .help("Look for a new version on GitHub once a day")
+        }
+        .controlSize(.small)
     }
 }
 

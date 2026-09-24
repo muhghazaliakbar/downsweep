@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<!--
+  Merged into the Info.plist Xcode generates. Sparkle's keys can't be set through build settings.
+  Kept outside the Downsweep folder so the synchronized group doesn't copy it as a resource.
+
+  SUPublicEDKey: the public half of the EdDSA key from Sparkle's generate_keys (see README → Releasing).
+  While it's empty, update checks are turned off.
+-->
+<dict>
+	<key>SUFeedURL</key>
+	<string>https://github.com/muhghazaliakbar/downsweep/releases/latest/download/appcast.xml</string>
+	<key>SUPublicEDKey</key>
+	<string></string>
+</dict>
+</plist>

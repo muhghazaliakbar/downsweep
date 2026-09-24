@@ -10,11 +10,13 @@ enum WindowID {
 @main
 struct DownsweepApp: App {
     @State private var model = AppModel()
+    @State private var updater = Updater()
 
     var body: some Scene {
         MenuBarExtra {
             MenuBarView()
                 .environment(model)
+                .environment(updater)
         } label: {
             MenuBarLabel(pendingCount: model.proposals.count, scanProgress: model.scanProgress, isPaused: model.isPaused)
                 .modifier(WindowRequestOpener(request: model.summaryWindowRequest, windowID: WindowID.weeklySummary))
@@ -47,6 +49,7 @@ struct DownsweepApp: App {
         Settings {
             SettingsView()
                 .environment(model)
+                .environment(updater)
         }
     }
 }

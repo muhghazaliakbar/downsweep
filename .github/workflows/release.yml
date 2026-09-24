@@ -14,6 +14,9 @@ jobs:
     env:
       TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
       NOTARY_PROFILE: downsweep
+      # Optional steps run only once their secrets exist.
+      HAS_SPARKLE_KEY: ${{ secrets.SPARKLE_PRIVATE_KEY != '' }}
+      HAS_TAP_TOKEN: ${{ secrets.HOMEBREW_TAP_TOKEN != '' }}
     steps:
       - uses: actions/checkout@v4
 
@@ -49,12 +52,25 @@ jobs:
       - name: Build, notarize and staple
         run: BUILD_NUMBER=${{ github.run_number }} scripts/release.sh "${GITHUB_REF_NAME#v}"
 
+      - name: Sign the update and write the Sparkle appcast
+        if: env.HAS_SPARKLE_KEY == 'true'
+        env:
+          SPARKLE_PRIVATE_KEY: ${{ secrets.SPARKLE_PRIVATE_KEY }}
+        run: scripts/appcast.sh "${GITHUB_REF_NAME#v}"
+
       - name: Publish GitHub release
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           version="${GITHUB_REF_NAME#v}"
-          gh release create "$GITHUB_REF_NAME" \
-            "build/release/Downsweep-$version.dmg" \
-            "build/release/Downsweep-$version.dmg.sha256" \
+          assets=("build/release/Downsweep-$version.dmg" "build/release/Downsweep-$version.dmg.sha256")
+          # The appcast rides along with each release; the app reads it from releases/latest.
+          [[ -f build/release/appcast.xml ]] && assets+=("build/release/appcast.xml")
+          gh release create "$GITHUB_REF_NAME" "${assets[@]}" \
             --title "Downsweep $version" --generate-notes
+
+      - name: Update the Homebrew tap
+        if: env.HAS_TAP_TOKEN == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.HOMEBREW_TAP_TOKEN }}
+        run: scripts/update-tap.sh "${GITHUB_REF_NAME#v}"

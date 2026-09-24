@@ -270,6 +270,26 @@
         }
       }
     },
+    "Check automatically": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Periksa otomatis"
+          }
+        }
+      }
+    },
+    "Check for Updates…": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Periksa Pembaruan…"
+          }
+        }
+      }
+    },
     "Check the folder again for new suggestions": {
       "localizations": {
         "id": {
@@ -950,6 +970,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Siklus"
+          }
+        }
+      }
+    },
+    "Look for a new version on GitHub once a day": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cari versi baru di GitHub sekali sehari"
           }
         }
       }

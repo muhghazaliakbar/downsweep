@@ -3,6 +3,7 @@ import SweepCore
 
 struct MenuBarView: View {
     @Environment(AppModel.self) private var model
+    @Environment(Updater.self) private var updater
     @Environment(\.openWindow) private var openWindow
     @Environment(\.openSettings) private var openSettings
 
@@ -100,6 +101,12 @@ struct MenuBarView: View {
                             NSApp.bringToFront()
                         }
                         Divider()
+                        if updater.isAvailable {
+                            Button("Check for Updates…", systemImage: "arrow.triangle.2.circlepath") {
+                                updater.checkForUpdates()
+                            }
+                            .disabled(!updater.canCheckForUpdates)
+                        }
                         Button("Settings…", systemImage: "gearshape") {
                             NSApp.bringToFront()
                             openSettings()

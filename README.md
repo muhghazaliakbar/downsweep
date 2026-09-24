@@ -13,6 +13,16 @@ A menu bar app that keeps your Mac's Downloads folder tidy without you writing a
 
 **Nothing is ever deleted.** Everything goes to the Trash, and every action can be undone from History.
 
+## Install
+
+With [Homebrew](https://brew.sh):
+
+```bash
+brew install --cask muhghazaliakbar/tap/downsweep
+```
+
+Or download the DMG from [Releases](https://github.com/muhghazaliakbar/downsweep/releases). Downsweep updates itself from there (Sparkle).
+
 ## Requirements
 
 - macOS 26 or later (the UI uses Liquid Glass)
@@ -40,9 +50,13 @@ Packages/SweepCore/        All decision logic, UI-free and unit-tested
   Policy/                  PolicyEngine (pure: items → proposals) and SweepPipeline
   Executor/                The only code that touches files: Trash, move, tag, undo
   Watcher/                 FSEvents folder watcher
-  Store/                   Action history
+  Store/                   Action history (SQLite), weekly summary
+Config/Info.plist          Sparkle feed URL and public key, merged into the generated Info.plist
 scripts/make-fixtures.sh   Builds a fake Downloads folder for development
 scripts/release.sh         Signed + notarized DMG
+scripts/appcast.sh         Signs the DMG for Sparkle and writes appcast.xml
+scripts/cask.sh            Prints the Homebrew cask; update-tap.sh commits it to the tap
+scripts/sync-strings.sh    Pulls new strings into the String Catalogs
 scripts/render-icon-layers.swift  Redraws the app icon's layers
 ```
 
@@ -108,6 +122,34 @@ Pushing a tag like `v0.1.0` runs `.github/workflows/release.yml`, which publishe
 | `DEVELOPER_ID_CERTIFICATE_P12` | The Developer ID certificate exported as .p12, then `base64 -i cert.p12` |
 | `DEVELOPER_ID_CERTIFICATE_PASSWORD` | The password you set when exporting the .p12 |
 
+### Auto-updates (Sparkle)
+
+Updates are signed with an EdDSA key. The app only checks for updates when `SUPublicEDKey` in `Config/Info.plist` is set, so builds without it never touch the network.
+
+1. Build the app once so Sparkle is downloaded, then create the key. It's stored in your login keychain, and the command prints the public key:
+
+   ```bash
+   build/DerivedData/SourcePackages/artifacts/sparkle/Sparkle/bin/generate_keys
+   ```
+
+2. Put the public key in `Config/Info.plist` under `SUPublicEDKey` and commit it.
+3. Export the private key and add its contents as the `SPARKLE_PRIVATE_KEY` repository secret, then delete the file:
+
+   ```bash
+   build/DerivedData/SourcePackages/artifacts/sparkle/Sparkle/bin/generate_keys -x sparkle-private-key.txt
+   ```
+
+Each release then uploads a signed `appcast.xml` next to the DMG. The app reads it from `releases/latest/download/appcast.xml`. Keep the private key safe: without it, existing installs can't be updated.
+
+### Homebrew
+
+The cask lives in a tap, [`muhghazaliakbar/homebrew-tap`](https://github.com/muhghazaliakbar/homebrew-tap):
+
+1. Create that repository on GitHub (public, can be empty).
+2. Create a fine-grained token with *Contents: read and write* on that repository only, and add it as the `HOMEBREW_TAP_TOKEN` secret.
+
+Each release then commits `Casks/downsweep.rb` with the new version and checksum. The cask sets `auto_updates true`, so Homebrew leaves updates to Sparkle.
+
 ## Design notes
 
 - The UI follows Apple's Human Interface Guidelines for macOS 26. It uses system fonts, SF Symbols, semantic colours and standard controls.
@@ -131,8 +173,8 @@ Pushing a tag like `v0.1.0` runs `.github/workflows/release.yml`, which publishe
 ### v1.0
 
 - [x] Weekly summary notification (Monday 9:00), with a shareable "cleaned this week" card
-- [ ] Sparkle auto-updates
-- [ ] Homebrew Cask
+- [x] Sparkle auto-updates (feed signed in the release workflow; needs the key set up once, see [Auto-updates](#auto-updates-sparkle))
+- [x] Homebrew Cask in a tap, updated by the release workflow (needs the tap repository, see [Homebrew](#homebrew))
 - [x] Indonesian localization, alongside English
 - [x] SQLite (GRDB) history store in place of JSON, importing v0.1 history automatically
 - [x] Wait for files to settle before acting: nothing changed in the last 2 minutes, re-checked (folders included) right before acting
@@ -148,7 +190,7 @@ Have an idea? [Open an issue](https://github.com/muhghazaliakbar/downsweep/issue
 
 ## Privacy & safety
 
-- Local only. There is no analytics and no network access.
+- Local only. There is no analytics, and your files never leave your Mac. The only network access is Sparkle checking GitHub Releases for a new version (once a day, if you allow it) and downloading an update you accept. Checking can be turned off in Settings → About.
 - Downsweep only acts on items at the top level of the watched folder. It leaves alone anything that changed in the last 2 minutes (still downloading, copying or unpacking). Right before acting, it re-checks that each file still exists and hasn't changed size, and that nothing inside a folder has changed, since the scan.
 - Automatic mode stops and asks before moving more than 50 items or 10 GB at once.
 - Downsweep ships without the App Sandbox. It has to run `hdiutil` and `pkgutil` to look inside installers, and those tools don't work reliably from a sandboxed process. It uses the Hardened Runtime.
