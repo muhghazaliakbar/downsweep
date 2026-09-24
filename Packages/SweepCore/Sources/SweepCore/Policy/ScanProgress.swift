@@ -20,14 +20,14 @@ public struct ScanProgress: Hashable, Sendable {
         self.total = total
     }
 
-    /// Progress across the whole scan, 0...1. Installer inspection (one mount per DMG)
-    /// dominates wall-clock time, so it gets most of the range.
+    /// Progress across the whole scan, 0...1. Reading metadata (folders are sized recursively)
+    /// and installer inspection (one mount per DMG) take most of the time, so they get most of the range.
     public var fractionCompleted: Double {
         let (start, end): (Double, Double) = switch phase {
-        case .listing: (0, 0.1)
-        case .inspectingInstallers: (0.1, 0.8)
-        case .findingDuplicates: (0.8, 0.95)
-        case .evaluating: (0.95, 1)
+        case .listing: (0, 0.5)
+        case .inspectingInstallers: (0.5, 0.85)
+        case .findingDuplicates: (0.85, 0.97)
+        case .evaluating: (0.97, 1)
         }
         guard total > 0 else { return start }
         return start + (end - start) * min(Double(completed) / Double(total), 1)

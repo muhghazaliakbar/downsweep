@@ -7,8 +7,17 @@ struct MenuBarView: View {
     @Environment(\.openSettings) private var openSettings
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 16) {
+        VStack(alignment: .leading, spacing: 14) {
             header
+
+            if let progress = model.scanProgress {
+                ProgressView(value: progress.fractionCompleted)
+                    .progressViewStyle(.linear)
+                    .controlSize(.mini)
+                    .animation(.smooth, value: progress)
+                    .transition(.opacity)
+            }
+
             summary
 
             if let pending = model.pendingConfirmation {
@@ -17,10 +26,10 @@ struct MenuBarView: View {
                 ErrorBanner(message: error)
             }
 
-            GlassEffectContainer(spacing: 6) {
-                VStack(spacing: 6) {
+            GlassEffectContainer(spacing: 10) {
+                LazyVGrid(columns: [GridItem(.flexible(), spacing: 10), GridItem(.flexible(), spacing: 10)], spacing: 10) {
                     ForEach(ProposalCategory.allCases) { category in
-                        CategoryTile(
+                        CategoryCard(
                             category: category,
                             count: model.proposals(in: .category(category)).count,
                             bytes: model.bytes(in: .category(category))
@@ -32,119 +41,156 @@ struct MenuBarView: View {
             }
 
             actions
+            footer
         }
         .padding(16)
-        .frame(width: 340)
-    }
-
-    private var header: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            headerRow
-            if let progress = model.scanProgress {
-                ProgressView(value: progress.fractionCompleted)
-                    .progressViewStyle(.linear)
-                    .controlSize(.mini)
-                    .animation(.smooth, value: progress)
-                    .transition(.opacity)
-            }
-        }
+        .frame(width: 360)
         .animation(.smooth, value: model.isScanning)
     }
 
-    private var headerRow: some View {
-        HStack(spacing: 10) {
-            Image(systemName: "arrow.down.circle.fill")
-                .font(.title2)
-                .foregroundStyle(.tint)
-                .symbolEffect(.pulse, isActive: model.isScanning)
-            VStack(alignment: .leading, spacing: 0) {
+    // MARK: - Header
+
+    private var header: some View {
+        HStack(spacing: 12) {
+            Image(nsImage: NSApp.applicationIconImage)
+                .resizable()
+                .interpolation(.high)
+                .frame(width: 40, height: 40)
+                .accessibilityHidden(true)
+
+            VStack(alignment: .leading, spacing: 1) {
                 Text("Downsweep")
                     .font(.headline)
                 Text(statusLine)
                     .font(.caption)
                     .foregroundStyle(.secondary)
+                    .lineLimit(1)
                     .contentTransition(.opacity)
                     .animation(.smooth, value: statusLine)
             }
-            Spacer()
-            if let progress = model.scanProgress {
-                Text(progress.percentText)
-                    .font(.caption)
-                    .monospacedDigit()
-                    .foregroundStyle(.secondary)
-                    .contentTransition(.numericText())
-                    .animation(.smooth, value: progress)
+
+            Spacer(minLength: 8)
+
+            GlassEffectContainer(spacing: 8) {
+                HStack(spacing: 8) {
+                    Button {
+                        Task { await model.scan() }
+                    } label: {
+                        Image(systemName: "arrow.clockwise")
+                            .symbolEffect(.rotate, options: .repeating, isActive: model.isScanning)
+                            .headerCircle()
+                    }
+                    .buttonStyle(.plain)
+                    .disabled(model.isScanning)
+                    .help("Scan the folder now")
+
+                    Menu {
+                        Button(model.isPaused ? "Resume" : "Pause for 24 Hours",
+                               systemImage: model.isPaused ? "play" : "pause") {
+                            model.togglePause()
+                        }
+                        Divider()
+                        Button("Settings…", systemImage: "gearshape") {
+                            NSApp.bringToFront()
+                            openSettings()
+                        }
+                        .keyboardShortcut(",")
+                        Button("Quit Downsweep", systemImage: "power") {
+                            NSApp.terminate(nil)
+                        }
+                        .keyboardShortcut("q")
+                    } label: {
+                        Image(systemName: "ellipsis")
+                            .headerCircle()
+                    }
+                    .menuStyle(.button)
+                    .buttonStyle(.plain)
+                    .menuIndicator(.hidden)
+                    .fixedSize()
+                    .help("Pause, settings and quit")
+                }
             }
         }
     }
 
     private var statusLine: String {
-        if model.isPaused { return String(localized: "Paused for 24 hours") }
         if let progress = model.scanProgress { return progress.statusText }
+        if model.isPaused { return String(localized: "Paused for 24 hours") }
         return model.settings.mode == .automatic
             ? String(localized: "Sweeping automatically")
             : String(localized: "Review mode")
     }
 
+    // MARK: - Summary
+
     private var summary: some View {
-        VStack(alignment: .leading, spacing: 2) {
-            Text(model.reclaimableBytes.fileSize)
-                .font(.system(size: 40, weight: .semibold, design: .rounded))
-                .monospacedDigit()
-                .contentTransition(.numericText())
-                .animation(.smooth, value: model.reclaimableBytes)
-            Text(model.proposals.isEmpty ? "Downloads is tidy" : "ready to sweep from \(model.settings.folderURL.lastPathComponent)")
-                .font(.callout)
-                .foregroundStyle(.secondary)
+        VStack(alignment: .leading, spacing: 10) {
+            VStack(alignment: .leading, spacing: 0) {
+                Text(model.reclaimableBytes.fileSize)
+                    .font(.system(size: 40, weight: .semibold, design: .rounded))
+                    .monospacedDigit()
+                    .contentTransition(.numericText())
+                    .animation(.smooth, value: model.reclaimableBytes)
+                Text(summaryCaption)
+                    .font(.callout)
+                    .foregroundStyle(.secondary)
+            }
+
+            if model.reclaimableBytes > 0 {
+                BreakdownBar(segments: ProposalCategory.allCases.map { ($0.tint, model.bytes(in: .category($0))) })
+                    .frame(height: 8)
+            }
+        }
+        .padding(14)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(.quinary, in: .rect(cornerRadius: 18))
+    }
+
+    private var summaryCaption: String {
+        let folder = model.settings.folderURL.lastPathComponent
+        if model.proposals.isEmpty { return String(localized: "\(folder) is tidy") }
+        return String(AttributedString(localized: "^[\(model.proposals.count) item](inflect: true) ready to sweep from \(folder)").characters)
+    }
+
+    // MARK: - Actions
+
+    private var actions: some View {
+        GlassEffectContainer(spacing: 8) {
+            HStack(spacing: 8) {
+                Button {
+                    Task { await model.apply(model.proposals) }
+                } label: {
+                    Label("Sweep All", systemImage: "sparkles")
+                        .frame(maxWidth: .infinity)
+                }
+                .buttonStyle(.glassProminent)
+                .disabled(model.proposals.isEmpty)
+                .help("Do every suggested action now. You can undo from History.")
+
+                Button {
+                    openReview(.all)
+                } label: {
+                    Label("Review", systemImage: "list.bullet.rectangle")
+                        .frame(maxWidth: .infinity)
+                }
+                .buttonStyle(.glass)
+                .help("Open the Review window to choose item by item")
+            }
+            .controlSize(.extraLarge)
         }
     }
 
-    private var actions: some View {
-        HStack(spacing: 8) {
-            Button {
-                Task { await model.apply(model.proposals) }
-            } label: {
-                Label("Sweep All", systemImage: "sparkles")
-                    .frame(maxWidth: .infinity)
+    private var footer: some View {
+        HStack(spacing: 6) {
+            Label(model.settings.folderURL.lastPathComponent, systemImage: "folder")
+            Spacer()
+            if let finished = model.result?.finishedAt {
+                Text("Checked \(finished, format: .relative(presentation: .named, unitsStyle: .abbreviated))")
             }
-            .buttonStyle(.glassProminent)
-            .disabled(model.proposals.isEmpty)
-
-            Button {
-                openReview(.all)
-            } label: {
-                Text("Review…")
-                    .frame(maxWidth: .infinity)
-            }
-            .buttonStyle(.glass)
-
-            Menu {
-                Button("Scan Now", systemImage: "arrow.clockwise") {
-                    Task { await model.scan() }
-                }
-                Button(model.isPaused ? "Resume" : "Pause for 24 Hours",
-                       systemImage: model.isPaused ? "play" : "pause") {
-                    model.togglePause()
-                }
-                Divider()
-                Button("Settings…", systemImage: "gearshape") {
-                    NSApp.bringToFront()
-                    openSettings()
-                }
-                .keyboardShortcut(",")
-                Button("Quit Downsweep", systemImage: "power") {
-                    NSApp.terminate(nil)
-                }
-                .keyboardShortcut("q")
-            } label: {
-                Image(systemName: "ellipsis")
-            }
-            .menuIndicator(.hidden)
-            .buttonStyle(.glass)
-            .buttonBorderShape(.circle)
-            .fixedSize()
         }
-        .controlSize(.large)
+        .font(.caption)
+        .foregroundStyle(.tertiary)
+        .padding(.horizontal, 4)
     }
 
     private func openReview(_ section: ReviewSection) {
@@ -154,44 +200,95 @@ struct MenuBarView: View {
     }
 }
 
-private struct CategoryTile: View {
+private extension View {
+    /// A round glass button face for the header, big enough to hit comfortably.
+    func headerCircle() -> some View {
+        font(.system(size: 13, weight: .semibold))
+            .frame(width: 32, height: 32)
+            .contentShape(.circle)
+            .glassEffect(.regular.interactive(), in: .circle)
+    }
+}
+
+/// Storage-style bar: one colored segment per category, sized by reclaimable bytes.
+private struct BreakdownBar: View {
+    let segments: [(color: Color, bytes: Int64)]
+
+    var body: some View {
+        let visible = segments.filter { $0.bytes > 0 }
+        let total = max(visible.reduce(0) { $0 + $1.bytes }, 1)
+        GeometryReader { proxy in
+            let spacing = 2.0 * Double(max(visible.count - 1, 0))
+            HStack(spacing: 2) {
+                ForEach(visible.indices, id: \.self) { index in
+                    Capsule()
+                        .fill(visible[index].color.gradient)
+                        // Keep tiny categories visible as a sliver.
+                        .frame(width: max(6, (proxy.size.width - spacing) * Double(visible[index].bytes) / Double(total)))
+                }
+            }
+            .frame(width: proxy.size.width, alignment: .leading)
+            .clipShape(.capsule)
+        }
+        .animation(.smooth, value: segments.map(\.bytes))
+        .accessibilityHidden(true)
+    }
+}
+
+private struct CategoryCard: View {
     let category: ProposalCategory
     let count: Int
     let bytes: Int64
     let action: () -> Void
 
+    private var isEmpty: Bool { count == 0 }
+
     var body: some View {
         Button(action: action) {
-            HStack(spacing: 12) {
-                Image(systemName: category.symbol)
-                    .font(.title3)
-                    .foregroundStyle(category.tint)
-                    .frame(width: 28)
+            VStack(alignment: .leading, spacing: 10) {
+                HStack(alignment: .top) {
+                    Image(systemName: category.symbol)
+                        .font(.system(size: 14, weight: .semibold))
+                        .foregroundStyle(isEmpty ? AnyShapeStyle(.secondary) : AnyShapeStyle(category.tint))
+                        .frame(width: 30, height: 30)
+                        .background((isEmpty ? Color.secondary : category.tint).opacity(0.16), in: .circle)
+                    Spacer()
+                    if isEmpty {
+                        Image(systemName: "checkmark.circle.fill")
+                            .foregroundStyle(.green.opacity(0.8))
+                    } else {
+                        Text(count, format: .number)
+                            .font(.caption.weight(.semibold))
+                            .monospacedDigit()
+                            .padding(.horizontal, 7)
+                            .padding(.vertical, 2)
+                            .background(category.tint.opacity(0.2), in: .capsule)
+                    }
+                }
+
                 VStack(alignment: .leading, spacing: 1) {
                     Text(category.title)
-                        .font(.body.weight(.medium))
-                    Text(count == 0 ? "Nothing to do" : "^[\(count) item](inflect: true)")
+                        .font(.callout.weight(.semibold))
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.8)
+                    Text(isEmpty ? String(localized: "All clear") : bytes.fileSize)
                         .font(.caption)
-                        .foregroundStyle(.secondary)
-                }
-                Spacer()
-                if bytes > 0 {
-                    Text(bytes.fileSize)
-                        .font(.callout)
                         .monospacedDigit()
                         .foregroundStyle(.secondary)
                 }
-                Image(systemName: "chevron.right")
-                    .font(.caption.weight(.semibold))
-                    .foregroundStyle(.tertiary)
             }
-            .padding(.horizontal, 12)
-            .padding(.vertical, 10)
-            .contentShape(.rect)
+            .padding(12)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .contentShape(.rect(cornerRadius: 16))
         }
         .buttonStyle(.plain)
-        .glassEffect(.regular.interactive(), in: .rect(cornerRadius: 14))
-        .opacity(count == 0 ? 0.6 : 1)
+        .glassEffect(
+            isEmpty ? .regular.interactive() : .regular.tint(category.tint.opacity(0.1)).interactive(),
+            in: .rect(cornerRadius: 16)
+        )
+        .help(isEmpty
+            ? "Nothing in \(category.title) right now"
+            : "Review \(count) items in \(category.title)")
     }
 }
 

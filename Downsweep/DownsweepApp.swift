@@ -48,21 +48,26 @@ private struct MenuBarLabel: View {
 
     var body: some View {
         if let scanProgress {
-            // Menu bar labels are rendered as static images, so progress is shown through the
-            // symbol's variable value rather than a symbol effect.
+            // Menu bar labels are rendered as static images, so progress is drawn into the icon
+            // (specks light up) rather than animated with a symbol effect.
             Label {
                 Text(scanProgress.percentText)
                     .monospacedDigit()
             } icon: {
-                Image(systemName: "timelapse", variableValue: scanProgress.fractionCompleted)
+                Image(nsImage: MenuBarIcon.scanning(progress: scanProgress.fractionCompleted))
             }
             .labelStyle(.titleAndIcon)
             .accessibilityLabel(Text("Downsweep: \(scanProgress.statusText)"))
         } else if pendingCount > 0 {
-            Label("\(pendingCount)", systemImage: "arrow.down.circle.fill")
-                .labelStyle(.titleAndIcon)
+            Label {
+                Text(pendingCount, format: .number)
+                    .monospacedDigit()
+            } icon: {
+                Image(nsImage: MenuBarIcon.idle)
+            }
+            .labelStyle(.titleAndIcon)
         } else {
-            Image(systemName: "arrow.down.circle")
+            Image(nsImage: MenuBarIcon.idle)
         }
     }
 }

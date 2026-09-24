@@ -5,6 +5,8 @@ extension ScanProgress {
     /// Short description of the current step, e.g. "Checking installers (2 of 5)".
     var statusText: String {
         switch phase {
+        case .listing where total > 0:
+            String(localized: "Reading files (\(completed) of \(total))…")
         case .listing:
             String(localized: "Reading files…")
         case .inspectingInstallers where total > 0:

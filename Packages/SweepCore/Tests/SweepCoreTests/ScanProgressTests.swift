@@ -6,10 +6,11 @@ import Testing
 struct ScanProgressTests {
     @Test func fractionStaysWithinPhaseRanges() {
         #expect(ScanProgress(phase: .listing).fractionCompleted == 0)
-        #expect(ScanProgress(phase: .inspectingInstallers, completed: 0, total: 4).fractionCompleted == 0.1)
-        #expect(abs(ScanProgress(phase: .inspectingInstallers, completed: 2, total: 4).fractionCompleted - 0.45) < 1e-9)
-        #expect(abs(ScanProgress(phase: .inspectingInstallers, completed: 9, total: 4).fractionCompleted - 0.8) < 1e-9)
-        #expect(ScanProgress(phase: .evaluating).fractionCompleted == 0.95)
+        #expect(ScanProgress(phase: .listing, completed: 1, total: 2).fractionCompleted == 0.25)
+        #expect(ScanProgress(phase: .inspectingInstallers, completed: 0, total: 4).fractionCompleted == 0.5)
+        #expect(abs(ScanProgress(phase: .inspectingInstallers, completed: 2, total: 4).fractionCompleted - 0.675) < 1e-9)
+        #expect(abs(ScanProgress(phase: .inspectingInstallers, completed: 9, total: 4).fractionCompleted - 0.85) < 1e-9)
+        #expect(ScanProgress(phase: .evaluating).fractionCompleted == 0.97)
     }
 
     @Test func pipelineReportsPhasesInOrder() async throws {
@@ -25,7 +26,7 @@ struct ScanProgressTests {
         }
 
         let updates = reported.withLock { $0 }
-        #expect(updates.map(\.phase) == [.listing, .inspectingInstallers, .findingDuplicates, .evaluating])
+        #expect(updates.map(\.phase) == [.listing, .listing, .inspectingInstallers, .findingDuplicates, .evaluating])
         #expect(updates.map(\.fractionCompleted) == updates.map(\.fractionCompleted).sorted())
     }
 }

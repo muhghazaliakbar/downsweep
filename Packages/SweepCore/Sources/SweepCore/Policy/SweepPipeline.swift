@@ -49,7 +49,13 @@ public enum SweepPipeline {
         progress: @Sendable (ScanProgress) -> Void = { _ in }
     ) async throws -> ScanResult {
         progress(ScanProgress(phase: .listing))
-        let items = try FolderScanner().scan(folder: folder)
+        var lastReported = 0
+        let items = try FolderScanner().scan(folder: folder) { completed, total in
+            // Throttle to about one update per percent so large folders don't flood the UI.
+            guard completed == total || completed - lastReported >= max(total / 100, 1) else { return }
+            lastReported = completed
+            progress(ScanProgress(phase: .listing, completed: completed, total: total))
+        }
 
         var installerStatus: [URL: InstallerStatus] = [:]
         if configuration.detectInstallers {
