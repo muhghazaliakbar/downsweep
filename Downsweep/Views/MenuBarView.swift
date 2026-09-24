@@ -95,6 +95,10 @@ struct MenuBarView: View {
                                systemImage: model.isPaused ? "play" : "pause") {
                             model.togglePause()
                         }
+                        Button("This Week’s Summary…", systemImage: "chart.bar.doc.horizontal") {
+                            openWindow(id: WindowID.weeklySummary)
+                            NSApp.bringToFront()
+                        }
                         Divider()
                         Button("Settings…", systemImage: "gearshape") {
                             NSApp.bringToFront()

@@ -42,9 +42,17 @@ final class AppModel {
     private var scanTask: Task<Void, Never>?
     private var resumeTask: Task<Void, Never>?
     private var followUpTask: Task<Void, Never>?
+    @ObservationIgnored private var summaryScheduler: WeeklySummaryScheduler?
+
+    /// Bumped to ask the always-present menu bar label to open the weekly summary window.
+    var summaryWindowRequest = 0
 
     init() {
         settings = AppSettings.load()
+        summaryScheduler = WeeklySummaryScheduler(
+            history: { [unowned self] in history },
+            onOpen: { [unowned self] in summaryWindowRequest += 1 }
+        )
         Task { await start() }
     }
 
@@ -70,6 +78,8 @@ final class AppModel {
 
     func start() async {
         history = await store.load()
+        summaryScheduler?.reschedule()
+        if DebugOptions.sendsWeeklySummaryAtLaunch { await summaryScheduler?.deliver() }
         startWatching()
         await scan()
     }
@@ -220,4 +230,10 @@ final class AppModel {
     }
 
     func dismissError() { lastError = nil }
+
+    /// Called when the Weekly Summary setting changes.
+    func weeklySummarySettingChanged() {
+        if summaryScheduler?.isEnabled == true { summaryScheduler?.requestAuthorization() }
+        summaryScheduler?.reschedule()
+    }
 }

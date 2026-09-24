@@ -280,3 +280,36 @@ private let installedFigma = URL(filePath: "/Applications/Figma.app")
     }
 }
 
+@Suite struct WeeklySummaryTests {
+    private func entry(_ kind: HistoryEntry.Kind, daysAgo days: Double, bytes: Int64, undone: Bool = false) -> HistoryEntry {
+        HistoryEntry(date: daysAgo(days), kind: kind, originalURL: URL(filePath: "/tmp/x"), resultURL: nil,
+                     bytes: bytes, reason: "r", undone: undone)
+    }
+
+    @Test func countsOnlyTheLastSevenDaysAndSkipsUndone() {
+        let summary = WeeklySummary(history: [
+            entry(.trash, daysAgo: 1, bytes: 500),
+            entry(.trash, daysAgo: 2, bytes: 300, undone: true),
+            entry(.move, daysAgo: 3, bytes: 200),
+            entry(.tag, daysAgo: 6.9, bytes: 50),
+            entry(.trash, daysAgo: 8, bytes: 10_000),
+        ], endingAt: now)
+
+        #expect(summary.trashedCount == 1)
+        #expect(summary.movedCount == 1)
+        #expect(summary.taggedCount == 1)
+        #expect(summary.itemCount == 3)
+        #expect(summary.bytesFreed == 500)
+        #expect(summary.bytesOrganized == 200)
+    }
+
+    @Test func nextDeliveryIsTheFollowingMondayMorning() throws {
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.timeZone = try #require(TimeZone(identifier: "Asia/Jakarta"))
+        // Friday 25 September 2026, 14:00 in Jakarta.
+        let friday = try #require(calendar.date(from: DateComponents(year: 2026, month: 9, day: 25, hour: 14)))
+        let next = WeeklySummary.nextDelivery(after: friday, calendar: calendar)
+        let parts = calendar.dateComponents([.year, .month, .day, .hour, .minute, .weekday], from: next)
+        #expect(parts == DateComponents(year: 2026, month: 9, day: 28, hour: 9, minute: 0, weekday: 2))
+    }
+}

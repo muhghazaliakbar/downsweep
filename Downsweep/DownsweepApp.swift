@@ -4,6 +4,7 @@ import SweepCore
 enum WindowID {
     static let review = "review"
     static let onboarding = "onboarding"
+    static let weeklySummary = "weekly-summary"
 }
 
 @main
@@ -16,6 +17,7 @@ struct DownsweepApp: App {
                 .environment(model)
         } label: {
             MenuBarLabel(pendingCount: model.proposals.count, scanProgress: model.scanProgress, isPaused: model.isPaused)
+                .modifier(WindowRequestOpener(request: model.summaryWindowRequest, windowID: WindowID.weeklySummary))
         }
         .menuBarExtraStyle(.window)
 
@@ -34,6 +36,13 @@ struct DownsweepApp: App {
         .windowStyle(.hiddenTitleBar)
         .windowResizability(.contentSize)
         .defaultLaunchBehavior(model.settings.hasCompletedOnboarding ? .suppressed : .presented)
+
+        Window("This Week", id: WindowID.weeklySummary) {
+            WeeklySummaryView()
+                .environment(model)
+        }
+        .windowResizability(.contentSize)
+        .defaultLaunchBehavior(.suppressed)
 
         Settings {
             SettingsView()
@@ -73,6 +82,21 @@ private struct MenuBarLabel: View {
             .labelStyle(.titleAndIcon)
         } else {
             Image(nsImage: MenuBarIcon.idle)
+        }
+    }
+}
+
+/// The menu bar label is the one view that always exists, so it opens windows asked for from
+/// outside SwiftUI (such as a click on a notification).
+private struct WindowRequestOpener: ViewModifier {
+    @Environment(\.openWindow) private var openWindow
+    let request: Int
+    let windowID: String
+
+    func body(content: Content) -> some View {
+        content.onChange(of: request) {
+            openWindow(id: windowID)
+            NSApp.bringToFront()
         }
     }
 }

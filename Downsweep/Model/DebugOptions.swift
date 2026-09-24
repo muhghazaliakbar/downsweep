@@ -21,5 +21,14 @@ enum DebugOptions {
         #endif
     }
 
+    /// Posts the weekly summary notification right after launch.
+    static var sendsWeeklySummaryAtLaunch: Bool {
+        #if DEBUG
+        UserDefaults.standard.bool(forKey: "DebugWeeklySummary")
+        #else
+        false
+        #endif
+    }
+
     static var now: Date { .now.addingTimeInterval(clockOffsetDays * 86_400) }
 }

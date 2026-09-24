@@ -3,6 +3,7 @@ import SweepCore
 
 struct HistoryView: View {
     @Environment(AppModel.self) private var model
+    @Environment(\.openWindow) private var openWindow
 
     var body: some View {
         Group {
@@ -63,6 +64,15 @@ struct HistoryView: View {
         }
         .navigationTitle("History")
         .navigationSubtitle(freedSummary)
+        .toolbar {
+            ToolbarItem {
+                Button("This Week", systemImage: "chart.bar.doc.horizontal") {
+                    openWindow(id: WindowID.weeklySummary)
+                }
+                .labelStyle(.titleAndIcon)
+                .help("See what Downsweep cleaned in the last 7 days, as a card you can share")
+            }
+        }
     }
 
     private var freedSummary: String {

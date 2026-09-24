@@ -23,6 +23,7 @@ private struct GeneralSettings: View {
     @Environment(AppModel.self) private var model
     @State private var choosingFolder = false
     @State private var launchAtLogin = SMAppService.mainApp.status == .enabled
+    @AppStorage(WeeklySummaryScheduler.enabledKey) private var weeklySummary = true
 
     var body: some View {
         @Bindable var model = model
@@ -50,6 +51,14 @@ private struct GeneralSettings: View {
             Section("Detection") {
                 Toggle("Find installers for apps that are already installed", isOn: $model.settings.configuration.detectInstallers)
                 Toggle("Find duplicate downloads", isOn: $model.settings.configuration.detectDuplicates)
+            }
+
+            Section {
+                Toggle("Weekly summary", isOn: $weeklySummary)
+                    .onChange(of: weeklySummary) { model.weeklySummarySettingChanged() }
+            } footer: {
+                Text("Every Monday morning, a notification with what Downsweep cleaned the week before, and a card you can share.")
+                    .foregroundStyle(.secondary)
             }
 
             Section {

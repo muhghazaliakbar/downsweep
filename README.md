@@ -130,7 +130,7 @@ Pushing a tag like `v0.1.0` runs `.github/workflows/release.yml`, which publishe
 
 ### v1.0
 
-- [ ] Weekly summary notification, with a shareable "cleaned this week" card
+- [x] Weekly summary notification (Monday 9:00), with a shareable "cleaned this week" card
 - [ ] Sparkle auto-updates
 - [ ] Homebrew Cask
 - [ ] Indonesian localization, alongside English
