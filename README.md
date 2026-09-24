@@ -1,3 +1,5 @@
+<img src="docs/icon.png" width="128" alt="Downsweep icon">
+
 # Downsweep
 
 A menu bar app that keeps your Mac's Downloads folder tidy without you writing a single rule.
@@ -40,6 +42,8 @@ Packages/SweepCore/        All decision logic, UI-free and unit-tested
   Watcher/                 FSEvents folder watcher
   Store/                   Action history
 scripts/make-fixtures.sh   Builds a fake Downloads folder for development
+scripts/release.sh         Signed + notarized DMG
+scripts/render-icon-layers.swift  Redraws the app icon's layers
 ```
 
 `PolicyEngine` is a pure function. If you want to change what Downsweep suggests, start there and in its tests.
@@ -71,6 +75,39 @@ End-to-end test over the fixtures (mounts the DMGs for real):
 DOWNSWEEP_FIXTURES=/tmp/DownsweepFixtures swift test --package-path Packages/SweepCore --filter FixturePipeline
 ```
 
+## Releasing
+
+`scripts/release.sh` archives the app, signs it with Developer ID, builds a DMG, then notarizes and staples it.
+
+One-time setup (requires the paid Apple Developer Program):
+
+1. Create a **Developer ID Application** certificate in Xcode: *Settings → Accounts → Manage Certificates*.
+2. Store notarization credentials in your keychain. The command prompts for an app-specific password, which you create at account.apple.com:
+
+   ```bash
+   xcrun notarytool store-credentials downsweep --apple-id you@example.com --team-id ABCDE12345
+   ```
+
+Then build a release locally:
+
+```bash
+TEAM_ID=ABCDE12345 NOTARY_PROFILE=downsweep scripts/release.sh 0.1.0
+```
+
+`SIGNING=adhoc scripts/release.sh 0.1.0` makes an unsigned test DMG without an Apple account.
+
+### From GitHub Actions
+
+Pushing a tag like `v0.1.0` runs `.github/workflows/release.yml`, which publishes the DMG as a GitHub Release. Before that, add these repository secrets:
+
+| Secret | Value |
+| --- | --- |
+| `APPLE_TEAM_ID` | Your 10-character team ID |
+| `APPLE_ID` | The Apple ID email used for notarization |
+| `APPLE_APP_SPECIFIC_PASSWORD` | App-specific password from account.apple.com |
+| `DEVELOPER_ID_CERTIFICATE_P12` | The Developer ID certificate exported as .p12, then `base64 -i cert.p12` |
+| `DEVELOPER_ID_CERTIFICATE_PASSWORD` | The password you set when exporting the .p12 |
+
 ## Design notes
 
 - The UI follows Apple's Human Interface Guidelines for macOS 26. It uses system fonts, SF Symbols, semantic colours and standard controls.
@@ -87,8 +124,9 @@ DOWNSWEEP_FIXTURES=/tmp/DownsweepFixtures swift test --package-path Packages/Swe
 - [x] Source rules from `kMDItemWhereFroms` (e.g. `mail.google.com` → Attachments)
 - [x] Review window, History with undo, onboarding, Settings
 - [x] Review and Automatic modes, with a safety limit of 50 items or 10 GB per sweep
-- [ ] App icon
-- [ ] Signed and notarized DMG on GitHub Releases
+- [x] App icon (Icon Composer, Liquid Glass)
+- [x] Release pipeline: signed, notarized DMG published to GitHub Releases on each `v*` tag
+- [ ] First notarized release (needs a Developer ID certificate, see [Releasing](#releasing))
 
 ### v1.0
 
