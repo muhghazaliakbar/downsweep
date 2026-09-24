@@ -23,6 +23,8 @@ brew install --cask muhghazaliakbar/tap/downsweep
 
 Or download the DMG from [Releases](https://github.com/muhghazaliakbar/downsweep/releases). Downsweep updates itself from there (Sparkle).
 
+> **Not notarized yet.** Until the app is signed with a Developer ID, macOS blocks it the first time you open it. Open **System Settings → Privacy & Security** and click **Open Anyway**. Updates after that install without asking again.
+
 ## Requirements
 
 - macOS 26 or later (the UI uses Liquid Glass)
@@ -108,7 +110,20 @@ Then build a release locally:
 TEAM_ID=ABCDE12345 NOTARY_PROFILE=downsweep scripts/release.sh 0.1.0
 ```
 
-`SIGNING=adhoc scripts/release.sh 0.1.0` makes an unsigned test DMG without an Apple account.
+`SIGNING=adhoc scripts/release.sh 0.1.0` makes an ad-hoc signed DMG without an Apple account. Gatekeeper warns about it until the app is notarized.
+
+The build number is derived from the version (1.2.3 → 10203), so Sparkle always sees a newer build.
+
+### Releasing without a Developer ID
+
+Until the Developer ID secrets exist, the release workflow only runs the tests. Publish from your Mac instead, with the Sparkle key in your keychain and `gh` signed in:
+
+```bash
+SIGNING=adhoc scripts/release.sh 1.0.0
+scripts/appcast.sh 1.0.0
+gh release create v1.0.0 build/release/Downsweep-1.0.0.dmg build/release/Downsweep-1.0.0.dmg.sha256 build/release/appcast.xml --title "Downsweep 1.0.0"
+UNNOTARIZED=1 scripts/cask.sh 1.0.0 build/release/Downsweep-1.0.0.dmg   # into the tap's Casks/downsweep.rb
+```
 
 ### From GitHub Actions
 

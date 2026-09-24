@@ -15,6 +15,10 @@
 set -euo pipefail
 
 version=${1:?usage: release.sh <version>, e.g. 0.1.0}
+# Sparkle offers an update when the build number grows, so derive it from the version:
+# 1.2.3 → 10203. That keeps local and CI releases in order.
+parts=(${(s:.:)version%%-*})
+build_number=${BUILD_NUMBER:-$(( ${parts[1]:-0} * 10000 + ${parts[2]:-0} * 100 + ${parts[3]:-0} ))}
 signing=${SIGNING:-developer-id}
 root=${0:A:h:h}
 out="$root/build/release"
@@ -43,7 +47,7 @@ step "Archiving Downsweep $version ($signing)"
 xcodebuild archive \
   -project Downsweep.xcodeproj -scheme Downsweep -configuration Release \
   -archivePath "$archive" -derivedDataPath "$root/build/DerivedData" \
-  MARKETING_VERSION="$version" CURRENT_PROJECT_VERSION="${BUILD_NUMBER:-1}" \
+  MARKETING_VERSION="$version" CURRENT_PROJECT_VERSION="$build_number" \
   "${sign_settings[@]}" -quiet
 
 app="$out/Downsweep.app"
