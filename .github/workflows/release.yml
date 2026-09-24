@@ -14,7 +14,6 @@ jobs:
     env:
       TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
       NOTARY_PROFILE: downsweep
-      NOTARY_KEYCHAIN: ${{ runner.temp }}/signing.keychain-db
     steps:
       - uses: actions/checkout@v4
 
@@ -36,6 +35,7 @@ jobs:
           security set-key-partition-list -S apple-tool:,apple: -k "$keychain_password" "$keychain"
           security list-keychains -d user -s "$keychain" $(security list-keychains -d user | tr -d '"')
           rm "$RUNNER_TEMP/certificate.p12"
+          echo "NOTARY_KEYCHAIN=$keychain" >> "$GITHUB_ENV"
 
       - name: Store notary credentials
         env:
