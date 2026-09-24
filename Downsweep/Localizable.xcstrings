@@ -1,0 +1,2201 @@
+{
+  "sourceLanguage": "en",
+  "strings": {
+    "": {},
+    "%@ (%lld)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "%1$@ (%2$lld)"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ (%lld)"
+          }
+        }
+      }
+    },
+    "%@ freed": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ dikosongkan"
+          }
+        }
+      }
+    },
+    "%@ is tidy": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ sudah rapi"
+          }
+        }
+      }
+    },
+    "%lld": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld"
+          }
+        }
+      }
+    },
+    "%lld days": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld hari"
+          }
+        }
+      }
+    },
+    "%lld items (%@) would be moved. Continue?": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "%1$lld items (%2$@) would be moved. Continue?"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld item (%@) akan dipindahkan. Lanjutkan?"
+          }
+        }
+      }
+    },
+    "%lld selected": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld dipilih"
+          }
+        }
+      }
+    },
+    "A to Z": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A ke Z"
+          }
+        }
+      }
+    },
+    "About": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tentang"
+          }
+        }
+      }
+    },
+    "Action": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tindakan"
+          }
+        }
+      }
+    },
+    "Activity": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aktivitas"
+          }
+        }
+      }
+    },
+    "Add Rule": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tambah Aturan"
+          }
+        }
+      }
+    },
+    "All Kinds": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Semua Jenis"
+          }
+        }
+      }
+    },
+    "All Suggestions": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Semua Saran"
+          }
+        }
+      }
+    },
+    "All Swept": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Semua Beres"
+          }
+        }
+      }
+    },
+    "All clear": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Semua beres"
+          }
+        }
+      }
+    },
+    "Already tidy. Downsweep will keep it that way.": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sudah rapi. Downsweep akan menjaganya tetap begitu."
+          }
+        }
+      }
+    },
+    "Apply": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Terapkan"
+          }
+        }
+      }
+    },
+    "Apps & Bundles": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "App & Bundel"
+          }
+        }
+      }
+    },
+    "Archives": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Arsip"
+          }
+        }
+      }
+    },
+    "Ask me first": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tanya saya dulu"
+          }
+        }
+      }
+    },
+    "Automatic mode stops and asks before moving more than %lld items or %@ at once.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "Automatic mode stops and asks before moving more than %1$lld items or %2$@ at once."
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mode otomatis berhenti dan bertanya sebelum memindahkan lebih dari %lld item atau %@ sekaligus."
+          }
+        }
+      }
+    },
+    "Back": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kembali"
+          }
+        }
+      }
+    },
+    "Buy me a coffee": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Traktir saya kopi"
+          }
+        }
+      }
+    },
+    "Change…": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ubah…"
+          }
+        }
+      }
+    },
+    "Check the folder again for new suggestions": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Periksa folder lagi untuk saran baru"
+          }
+        }
+      }
+    },
+    "Checked %@": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diperiksa %@"
+          }
+        }
+      }
+    },
+    "Checking installers (%lld of %lld)…": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "Checking installers (%1$lld of %2$lld)…"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Memeriksa installer (%lld dari %lld)…"
+          }
+        }
+      }
+    },
+    "Checking installers…": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Memeriksa installer…"
+          }
+        }
+      }
+    },
+    "Cleaned this week": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dibersihkan minggu ini"
+          }
+        }
+      }
+    },
+    "Code": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kode"
+          }
+        }
+      }
+    },
+    "Common sources in your Downloads": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sumber umum di folder Unduhan Anda"
+          }
+        }
+      }
+    },
+    "Copy Image": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Salin Gambar"
+          }
+        }
+      }
+    },
+    "Copy the card to the clipboard, ready to paste": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Salin kartu ke papan klip, siap ditempel"
+          }
+        }
+      }
+    },
+    "Couldn’t read %@: %@": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "Couldn’t read %1$@: %2$@"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tidak dapat membaca %@: %@"
+          }
+        }
+      }
+    },
+    "Count as in use if opened within": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anggap masih dipakai jika dibuka dalam"
+          }
+        }
+      }
+    },
+    "DMG, ZIP and PKG files whose app is already installed.": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "File DMG, ZIP, dan PKG yang app-nya sudah terinstal."
+          }
+        }
+      }
+    },
+    "Date Added": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tanggal Ditambahkan"
+          }
+        }
+      }
+    },
+    "Date Last Opened": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tanggal Terakhir Dibuka"
+          }
+        }
+      }
+    },
+    "Detection": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deteksi"
+          }
+        }
+      }
+    },
+    "Disk Images & Installers": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Image Disk & Installer"
+          }
+        }
+      }
+    },
+    "Dismiss": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tutup"
+          }
+        }
+      }
+    },
+    "Do every suggested action now. You can undo from History.": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jalankan semua tindakan yang disarankan sekarang. Anda bisa mengurungkannya dari Riwayat."
+          }
+        }
+      }
+    },
+    "Do the suggested action for each selected item: move it to the Trash, move it to a folder, or tag it. You can undo from History. (⌘↩)": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jalankan tindakan yang disarankan untuk setiap item terpilih: pindahkan ke Tong Sampah, pindahkan ke folder, atau beri tag. Anda bisa mengurungkannya dari Riwayat. (⌘↩)"
+          }
+        }
+      }
+    },
+    "Do the suggested action for every item in this list. You can undo from History.": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jalankan tindakan yang disarankan untuk semua item di daftar ini. Anda bisa mengurungkannya dari Riwayat."
+          }
+        }
+      }
+    },
+    "Do the suggested action for every item shown by the current filter. Hidden items aren’t touched. You can undo from History.": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jalankan tindakan yang disarankan untuk semua item yang tampil dengan filter saat ini. Item yang tersembunyi tidak disentuh. Anda bisa mengurungkannya dari Riwayat."
+          }
+        }
+      }
+    },
+    "Documents": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dokumen"
+          }
+        }
+      }
+    },
+    "Domain": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Domain"
+          }
+        }
+      }
+    },
+    "Done": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Selesai"
+          }
+        }
+      }
+    },
+    "Downloaded from %@": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diunduh dari %@"
+          }
+        }
+      }
+    },
+    "Downsweep": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Downsweep"
+          }
+        }
+      }
+    },
+    "Downsweep only looks at the top level of this folder. macOS will ask you to allow access.": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Downsweep hanya melihat tingkat teratas folder ini. macOS akan meminta Anda mengizinkan akses."
+          }
+        }
+      }
+    },
+    "Downsweep tidied %@ and freed %@. Click to see and share your week.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "Downsweep tidied %1$@ and freed %2$@. Click to see and share your week."
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Downsweep merapikan %@ dan mengosongkan %@. Klik untuk melihat dan membagikan minggu Anda."
+          }
+        }
+      }
+    },
+    "Downsweep tidied %@ in your Downloads folder. Click to see and share your week.": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Downsweep merapikan %@ di folder Unduhan Anda. Klik untuk melihat dan membagikan minggu Anda."
+          }
+        }
+      }
+    },
+    "Downsweep week.png": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Minggu Downsweep.png"
+          }
+        }
+      }
+    },
+    "Downsweep: %@": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Downsweep: %@"
+          }
+        }
+      }
+    },
+    "Downsweep: paused": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Downsweep: dijeda"
+          }
+        }
+      }
+    },
+    "Duplicate downloads": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unduhan duplikat"
+          }
+        }
+      }
+    },
+    "Duplicates": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Duplikat"
+          }
+        }
+      }
+    },
+    "Enabled": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aktif"
+          }
+        }
+      }
+    },
+    "Enjoying Downsweep?": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Suka dengan Downsweep?"
+          }
+        }
+      }
+    },
+    "Every Monday morning, a notification with what Downsweep cleaned the week before, and a card you can share.": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Setiap Senin pagi, notifikasi berisi apa yang dibersihkan Downsweep minggu sebelumnya, beserta kartu yang bisa Anda bagikan."
+          }
+        }
+      }
+    },
+    "Everything Downsweep moves shows up here, and can be undone while it’s still in the Trash.": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Semua yang dipindahkan Downsweep muncul di sini, dan bisa diurungkan selama masih ada di Tong Sampah."
+          }
+        }
+      }
+    },
+    "Everything goes to the Trash and can be undone.": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Semuanya masuk ke Tong Sampah dan bisa diurungkan."
+          }
+        }
+      }
+    },
+    "File": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "File"
+          }
+        }
+      }
+    },
+    "Find duplicate downloads": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Temukan unduhan duplikat"
+          }
+        }
+      }
+    },
+    "Find installers for apps that are already installed": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Temukan installer untuk app yang sudah terinstal"
+          }
+        }
+      }
+    },
+    "Folder": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folder"
+          }
+        }
+      }
+    },
+    "Folders": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folder"
+          }
+        }
+      }
+    },
+    "Fonts": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Font"
+          }
+        }
+      }
+    },
+    "General": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Umum"
+          }
+        }
+      }
+    },
+    "Get Started": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mulai"
+          }
+        }
+      }
+    },
+    "GitHub": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitHub"
+          }
+        }
+      }
+    },
+    "Hide these suggestions for now. Nothing is changed; they come back the next time Downsweep starts.": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sembunyikan saran ini untuk sementara. Tidak ada yang diubah; saran akan muncul lagi saat Downsweep dijalankan berikutnya."
+          }
+        }
+      }
+    },
+    "History": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Riwayat"
+          }
+        }
+      }
+    },
+    "Identical copy of %@": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Salinan identik dari %@"
+          }
+        }
+      }
+    },
+    "Images": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gambar"
+          }
+        }
+      }
+    },
+    "Installed Installers": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Installer Terinstal"
+          }
+        }
+      }
+    },
+    "Installer for %@ %@ — %@ is already installed": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "Installer for %1$@ %2$@ — %3$@ is already installed"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Installer untuk %@ %@ — %@ sudah terinstal"
+          }
+        }
+      }
+    },
+    "Installers you’ve already used": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Installer yang sudah Anda pakai"
+          }
+        }
+      }
+    },
+    "Items selected in the list. Shift- or Command-click to select more.": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Item yang dipilih di daftar. Klik sambil menekan Shift atau Command untuk memilih lebih banyak."
+          }
+        }
+      }
+    },
+    "It’s free and open source. A coffee helps keep it going.": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gratis dan open source. Secangkir kopi membantu proyek ini terus berjalan."
+          }
+        }
+      }
+    },
+    "Keep these items where they are. Downsweep won’t suggest them again; unpin them in Settings.": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Biarkan item ini di tempatnya. Downsweep tidak akan menyarankannya lagi; lepas sematannya di Pengaturan."
+          }
+        }
+      }
+    },
+    "Keeps your Downloads folder tidy, without rules to write.\nNothing is deleted: everything goes to the Trash and can be undone.": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Menjaga folder Unduhan tetap rapi, tanpa perlu menulis aturan.\nTidak ada yang dihapus: semuanya masuk ke Tong Sampah dan bisa diurungkan."
+          }
+        }
+      }
+    },
+    "Kind": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jenis"
+          }
+        }
+      }
+    },
+    "Large sweep paused": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pembersihan besar dijeda"
+          }
+        }
+      }
+    },
+    "Largest First": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Terbesar Dulu"
+          }
+        }
+      }
+    },
+    "Leave new downloads alone for": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Biarkan unduhan baru selama"
+          }
+        }
+      }
+    },
+    "Lifecycle": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Siklus"
+          }
+        }
+      }
+    },
+    "Looking for duplicates…": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mencari duplikat…"
+          }
+        }
+      }
+    },
+    "Looking through %@…": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Memeriksa %@…"
+          }
+        }
+      }
+    },
+    "Made by Muh Ghazali Akbar": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dibuat oleh Muh Ghazali Akbar"
+          }
+        }
+      }
+    },
+    "Move files downloaded from…": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pindahkan file yang diunduh dari…"
+          }
+        }
+      }
+    },
+    "Move stale items to Trash after": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pindahkan item usang ke Tong Sampah setelah"
+          }
+        }
+      }
+    },
+    "Move to %@": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pindahkan ke %@"
+          }
+        }
+      }
+    },
+    "Move to Trash": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pindahkan ke Tong Sampah"
+          }
+        }
+      }
+    },
+    "Moved": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dipindahkan"
+          }
+        }
+      }
+    },
+    "Moved to Trash": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dipindahkan ke Tong Sampah"
+          }
+        }
+      }
+    },
+    "Movies": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Film"
+          }
+        }
+      }
+    },
+    "Music & Audio": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Musik & Audio"
+          }
+        }
+      }
+    },
+    "Name": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nama"
+          }
+        }
+      }
+    },
+    "Never touch": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jangan pernah disentuh"
+          }
+        }
+      }
+    },
+    "Newest First": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Terbaru Dulu"
+          }
+        }
+      }
+    },
+    "No %@": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tidak Ada %@"
+          }
+        }
+      }
+    },
+    "No Activity Yet": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Belum Ada Aktivitas"
+          }
+        }
+      }
+    },
+    "Not Now": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nanti Saja"
+          }
+        }
+      }
+    },
+    "Not opened in %lld days": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tidak dibuka selama %lld hari"
+          }
+        }
+      }
+    },
+    "Nothing Pinned": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tidak Ada yang Disematkan"
+          }
+        }
+      }
+    },
+    "Nothing here needs your attention right now.": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tidak ada yang perlu Anda perhatikan saat ini."
+          }
+        }
+      }
+    },
+    "Nothing in %@ right now": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tidak ada apa pun di %@ saat ini"
+          }
+        }
+      }
+    },
+    "Nothing is ever deleted": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tidak ada yang pernah dihapus"
+          }
+        }
+      }
+    },
+    "Nothing is swept automatically.": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tidak ada yang dibersihkan otomatis."
+          }
+        }
+      }
+    },
+    "Nothing of this kind needs your attention here.": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tidak ada item jenis ini yang perlu Anda perhatikan di sini."
+          }
+        }
+      }
+    },
+    "Nothing swept in the last 7 days yet. Your card fills in as Downsweep cleans up.": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Belum ada yang dibersihkan dalam 7 hari terakhir. Kartu Anda akan terisi seiring Downsweep bekerja."
+          }
+        }
+      }
+    },
+    "Oldest First": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Terlama Dulu"
+          }
+        }
+      }
+    },
+    "One Folder, Watched Quietly": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Satu Folder, Dipantau Diam-diam"
+          }
+        }
+      }
+    },
+    "Open at Login": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Buka saat Masuk"
+          }
+        }
+      }
+    },
+    "Open source under the MIT License": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open source dengan Lisensi MIT"
+          }
+        }
+      }
+    },
+    "Open the Review window to choose item by item": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Buka jendela Tinjau untuk memilih satu per satu"
+          }
+        }
+      }
+    },
+    "Order": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Urutan"
+          }
+        }
+      }
+    },
+    "Other": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lainnya"
+          }
+        }
+      }
+    },
+    "PDF Documents": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dokumen PDF"
+          }
+        }
+      }
+    },
+    "Pause for 24 Hours": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jeda selama 24 Jam"
+          }
+        }
+      }
+    },
+    "Pause, settings and quit": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jeda, pengaturan, dan keluar"
+          }
+        }
+      }
+    },
+    "Paused": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dijeda"
+          }
+        }
+      }
+    },
+    "Paused until %@": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dijeda hingga %@"
+          }
+        }
+      }
+    },
+    "Pin": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sematkan"
+          }
+        }
+      }
+    },
+    "Pin an item in Review and Downsweep will never suggest it again.": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sematkan item di Tinjau dan Downsweep tidak akan pernah menyarankannya lagi."
+          }
+        }
+      }
+    },
+    "Pinned": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Disematkan"
+          }
+        }
+      }
+    },
+    "Preparing suggestions…": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Menyiapkan saran…"
+          }
+        }
+      }
+    },
+    "Presentations": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Presentasi"
+          }
+        }
+      }
+    },
+    "Quick Look": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lihat Cepat"
+          }
+        }
+      }
+    },
+    "Quit Downsweep": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keluar dari Downsweep"
+          }
+        }
+      }
+    },
+    "Reading files (%lld of %lld)…": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "Reading files (%1$lld of %2$lld)…"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Membaca file (%lld dari %lld)…"
+          }
+        }
+      }
+    },
+    "Reading files…": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Membaca file…"
+          }
+        }
+      }
+    },
+    "Reason": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alasan"
+          }
+        }
+      }
+    },
+    "Releases": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rilis"
+          }
+        }
+      }
+    },
+    "Report a bug or suggest a feature": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Laporkan bug atau usulkan fitur"
+          }
+        }
+      }
+    },
+    "Report an Issue": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Laporkan Masalah"
+          }
+        }
+      }
+    },
+    "Restore Defaults": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kembalikan ke Default"
+          }
+        }
+      }
+    },
+    "Resume": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lanjutkan"
+          }
+        }
+      }
+    },
+    "Resume sweeping now": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lanjutkan pembersihan sekarang"
+          }
+        }
+      }
+    },
+    "Review": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tinjau"
+          }
+        }
+      }
+    },
+    "Review %lld items in %@": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "Review %1$lld items in %2$@"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tinjau %lld item di %@"
+          }
+        }
+      }
+    },
+    "Review Suggestions": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tinjau Saran"
+          }
+        }
+      }
+    },
+    "Review mode": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mode tinjau"
+          }
+        }
+      }
+    },
+    "Rules": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aturan"
+          }
+        }
+      }
+    },
+    "Save the card as a PNG image": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Simpan kartu sebagai gambar PNG"
+          }
+        }
+      }
+    },
+    "Save…": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Simpan…"
+          }
+        }
+      }
+    },
+    "Scan Again": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pindai Lagi"
+          }
+        }
+      }
+    },
+    "Scan Folder": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pindai Folder"
+          }
+        }
+      }
+    },
+    "Scan the folder now": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pindai folder sekarang"
+          }
+        }
+      }
+    },
+    "See what Downsweep cleaned in the last 7 days, as a card you can share": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lihat apa yang dibersihkan Downsweep dalam 7 hari terakhir, sebagai kartu yang bisa Anda bagikan"
+          }
+        }
+      }
+    },
+    "See what’s new and download updates": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lihat yang baru dan unduh pembaruan"
+          }
+        }
+      }
+    },
+    "Settings…": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pengaturan…"
+          }
+        }
+      }
+    },
+    "Share the card as an image": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bagikan kartu sebagai gambar"
+          }
+        }
+      }
+    },
+    "Share…": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bagikan…"
+          }
+        }
+      }
+    },
+    "Show All Kinds": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tampilkan Semua Jenis"
+          }
+        }
+      }
+    },
+    "Show in Finder": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tampilkan di Finder"
+          }
+        }
+      }
+    },
+    "Show only one kind of item, such as images or folders": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tampilkan hanya satu jenis item, misalnya gambar atau folder"
+          }
+        }
+      }
+    },
+    "Size": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ukuran"
+          }
+        }
+      }
+    },
+    "Skip": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lewati"
+          }
+        }
+      }
+    },
+    "Smallest First": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Terkecil Dulu"
+          }
+        }
+      }
+    },
+    "Sort By": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Urutkan Menurut"
+          }
+        }
+      }
+    },
+    "Sort by %@, %@": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "Sort by %1$@, %2$@"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Urutkan menurut %@, %@"
+          }
+        }
+      }
+    },
+    "Sort by Source": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Urutkan per Sumber"
+          }
+        }
+      }
+    },
+    "Spreadsheets": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Spreadsheet"
+          }
+        }
+      }
+    },
+    "Stale Files": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "File Usang"
+          }
+        }
+      }
+    },
+    "Stale and untouched for %lld days": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Usang dan tidak disentuh selama %lld hari"
+          }
+        }
+      }
+    },
+    "Stale items get a Finder tag first, so you can spot them before anything moves.": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Item usang diberi tag Finder dulu, jadi Anda bisa melihatnya sebelum ada yang dipindahkan."
+          }
+        }
+      }
+    },
+    "Step %lld of %lld": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "Step %1$lld of %2$lld"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Langkah %lld dari %lld"
+          }
+        }
+      }
+    },
+    "Subdomains match too: “google.com” covers mail.google.com.": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Subdomain juga cocok: “google.com” mencakup mail.google.com."
+          }
+        }
+      }
+    },
+    "Suggestions": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Saran"
+          }
+        }
+      }
+    },
+    "Support Downsweep on Buy Me a Coffee (opens in your browser)": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dukung Downsweep di Buy Me a Coffee (terbuka di browser Anda)"
+          }
+        }
+      }
+    },
+    "Sweep": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bersihkan"
+          }
+        }
+      }
+    },
+    "Sweep %@": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bersihkan %@"
+          }
+        }
+      }
+    },
+    "Sweep All": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bersihkan Semua"
+          }
+        }
+      }
+    },
+    "Sweep automatically": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bersihkan otomatis"
+          }
+        }
+      }
+    },
+    "Sweeping automatically": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Membersihkan otomatis"
+          }
+        }
+      }
+    },
+    "Tag %@": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Beri Tag %@"
+          }
+        }
+      }
+    },
+    "Tag as Stale after not opening for": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tandai Usang jika tidak dibuka selama"
+          }
+        }
+      }
+    },
+    "Tagged": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diberi Tag"
+          }
+        }
+      }
+    },
+    "Text": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Teks"
+          }
+        }
+      }
+    },
+    "This Week": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Minggu Ini"
+          }
+        }
+      }
+    },
+    "This Week’s Summary…": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ringkasan Minggu Ini…"
+          }
+        }
+      }
+    },
+    "This week I cleaned up": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Minggu ini saya membersihkan"
+          }
+        }
+      }
+    },
+    "Undo": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Urungkan"
+          }
+        }
+      }
+    },
+    "Undone": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diurungkan"
+          }
+        }
+      }
+    },
+    "Unpin": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lepas Sematan"
+          }
+        }
+      }
+    },
+    "Version %@ (%@)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "Version %1$@ (%2$@)"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Versi %@ (%@)"
+          }
+        }
+      }
+    },
+    "View the source code on GitHub": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lihat kode sumber di GitHub"
+          }
+        }
+      }
+    },
+    "Watching": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Memantau"
+          }
+        }
+      }
+    },
+    "Weekly summary": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ringkasan mingguan"
+          }
+        }
+      }
+    },
+    "Welcome to Downsweep": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Selamat Datang di Downsweep"
+          }
+        }
+      }
+    },
+    "When": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kapan"
+          }
+        }
+      }
+    },
+    "When Downsweep finds something": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Saat Downsweep menemukan sesuatu"
+          }
+        }
+      }
+    },
+    "Your Downloads folder, kept tidy without writing a single rule.": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folder Unduhan Anda, tetap rapi tanpa menulis satu aturan pun."
+          }
+        }
+      }
+    },
+    "Your week in Downloads": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Minggu Anda di folder Unduhan"
+          }
+        }
+      }
+    },
+    "Z to A": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Z ke A"
+          }
+        }
+      }
+    },
+    "^[%lld file](inflect: true)": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld file"
+          }
+        }
+      }
+    },
+    "^[%lld item](inflect: true)": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld item"
+          }
+        }
+      }
+    },
+    "^[%lld item](inflect: true) ready to sweep from %@": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "^[%1$lld item](inflect: true) ready to sweep from %2$@"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld item siap dibersihkan dari %@"
+          }
+        }
+      }
+    },
+    "^[%lld item](inflect: true) · %@": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "^[%1$lld item](inflect: true) · %2$@"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld item · %@"
+          }
+        }
+      }
+    },
+    "can be swept right now": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "bisa dibersihkan sekarang"
+          }
+        }
+      }
+    },
+    "example.com": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "example.com"
+          }
+        }
+      }
+    },
+    "freed from Downloads, across %@": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "dikosongkan dari Unduhan, dari %@"
+          }
+        }
+      }
+    },
+    "sorted": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "dipindah"
+          }
+        }
+      }
+    },
+    "tagged": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "diberi tag"
+          }
+        }
+      }
+    },
+    "tidied in my Downloads folder": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "dirapikan di folder Unduhan saya"
+          }
+        }
+      }
+    },
+    "trashed": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "dibuang"
+          }
+        }
+      }
+    },
+    "“report (1).pdf” that’s byte-for-byte the same file.": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "“report (1).pdf” yang isinya sama persis byte demi byte."
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}

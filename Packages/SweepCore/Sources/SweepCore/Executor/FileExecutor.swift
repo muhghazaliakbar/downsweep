@@ -36,8 +36,10 @@ public enum ExecutorError: LocalizedError, Equatable {
 
     public var errorDescription: String? {
         switch self {
-        case .itemChanged(let url): "\(url.lastPathComponent) changed since it was scanned, so it was left alone."
-        case .cannotUndo(let url): "\(url.lastPathComponent) is no longer where Downsweep put it."
+        case .itemChanged(let url):
+            String(localized: "\(url.lastPathComponent) changed since it was scanned, so it was left alone.", bundle: .module)
+        case .cannotUndo(let url):
+            String(localized: "\(url.lastPathComponent) is no longer where Downsweep put it.", bundle: .module)
         }
     }
 }

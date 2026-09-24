@@ -133,7 +133,7 @@ Pushing a tag like `v0.1.0` runs `.github/workflows/release.yml`, which publishe
 - [x] Weekly summary notification (Monday 9:00), with a shareable "cleaned this week" card
 - [ ] Sparkle auto-updates
 - [ ] Homebrew Cask
-- [ ] Indonesian localization, alongside English
+- [x] Indonesian localization, alongside English
 - [ ] SQLite (GRDB) history store in place of JSON
 - [x] Wait for files to settle before acting: nothing changed in the last 2 minutes, re-checked (folders included) right before acting
 

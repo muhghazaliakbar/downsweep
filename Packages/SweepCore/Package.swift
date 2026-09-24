@@ -3,6 +3,7 @@ import PackageDescription
 
 let package = Package(
     name: "SweepCore",
+    defaultLocalization: "en",
     platforms: [.macOS(.v15)],
     products: [
         .library(name: "SweepCore", targets: ["SweepCore"]),

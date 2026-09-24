@@ -1,0 +1,26 @@
+{
+  "sourceLanguage": "en",
+  "strings": {
+    "%@ changed since it was scanned, so it was left alone.": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ berubah sejak dipindai, jadi dibiarkan."
+          }
+        }
+      }
+    },
+    "%@ is no longer where Downsweep put it.": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ sudah tidak berada di tempat Downsweep meletakkannya."
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}
