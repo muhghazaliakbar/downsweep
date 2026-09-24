@@ -366,6 +366,16 @@
         }
       }
     },
+    "Couldn’t load history: %@": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tidak dapat memuat riwayat: %@"
+          }
+        }
+      }
+    },
     "Couldn’t read %@: %@": {
       "localizations": {
         "en": {
@@ -784,6 +794,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Riwayat"
+          }
+        }
+      }
+    },
+    "History couldn’t be opened, so this session’s actions won’t be saved: %@": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Riwayat tidak dapat dibuka, jadi tindakan di sesi ini tidak akan disimpan: %@"
           }
         }
       }
@@ -1894,6 +1914,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Teks"
+          }
+        }
+      }
+    },
+    "The sweep worked, but it couldn’t be saved to History: %@": {
+      "localizations": {
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pembersihan berhasil, tetapi tidak dapat disimpan ke Riwayat: %@"
           }
         }
       }

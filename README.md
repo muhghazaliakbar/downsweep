@@ -134,7 +134,7 @@ Pushing a tag like `v0.1.0` runs `.github/workflows/release.yml`, which publishe
 - [ ] Sparkle auto-updates
 - [ ] Homebrew Cask
 - [x] Indonesian localization, alongside English
-- [ ] SQLite (GRDB) history store in place of JSON
+- [x] SQLite (GRDB) history store in place of JSON, importing v0.1 history automatically
 - [x] Wait for files to settle before acting: nothing changed in the last 2 minutes, re-checked (folders included) right before acting
 
 ### Later

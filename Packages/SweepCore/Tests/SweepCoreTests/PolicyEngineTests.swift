@@ -247,12 +247,37 @@ private let installedFigma = URL(filePath: "/Applications/Figma.app")
         }
     }
 
-    @Test func historyRoundTripsAndPrunes() async throws {
-        let store = HistoryStore(fileURL: folder.appending(path: "history.json"))
-        let fresh = HistoryEntry(date: now, kind: .tag, originalURL: folder, resultURL: nil, bytes: 0, reason: "r")
+    @Test func historyRoundTripsPrunesAndUndoes() async throws {
+        let store = try HistoryStore(databaseURL: folder.appending(path: "history.sqlite"))
+        let fresh = HistoryEntry(date: now, kind: .trash, originalURL: folder.appending(path: "a.dmg"),
+                                 resultURL: URL(filePath: "/Users/test/.Trash/a.dmg"), bytes: 42, reason: "r")
+        let newer = HistoryEntry(date: now.addingTimeInterval(60), kind: .tag, originalURL: folder, resultURL: nil,
+                                 tag: "Stale", bytes: 0, reason: "r")
         let old = HistoryEntry(date: daysAgo(120), kind: .tag, originalURL: folder, resultURL: nil, bytes: 0, reason: "r")
-        try await store.save([fresh, old], now: now)
-        #expect(await store.load() == [fresh])
+        try await store.append([fresh, old, newer])
+
+        #expect(try await store.load(now: now) == [newer, fresh])
+
+        try await store.setUndone(fresh.id)
+        var undone = fresh
+        undone.undone = true
+        #expect(try await store.load(now: now) == [newer, undone])
+    }
+
+    @Test func importsLegacyJSONOnce() async throws {
+        let json = folder.appending(path: "history.json")
+        let entry = HistoryEntry(date: now, kind: .move, originalURL: folder.appending(path: "b.pdf"),
+                                 resultURL: folder.appending(path: "Docs/b.pdf"), bytes: 7, reason: "r")
+        let encoder = JSONEncoder()
+        encoder.dateEncodingStrategy = .iso8601
+        try encoder.encode([entry]).write(to: json)
+
+        let database = folder.appending(path: "history.sqlite")
+        #expect(try await HistoryStore(databaseURL: database, legacyJSON: json).load(now: now) == [entry])
+        #expect(!FileManager.default.fileExists(atPath: json.path))
+        #expect(FileManager.default.fileExists(atPath: json.appendingPathExtension("imported").path))
+        // Reopening doesn't import again or lose anything.
+        #expect(try await HistoryStore(databaseURL: database, legacyJSON: json).load(now: now) == [entry])
     }
 }
 

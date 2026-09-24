@@ -37,7 +37,7 @@ final class AppModel {
     /// Skipped suggestions come back on relaunch; pins are permanent.
     private var skipped: Set<URL> = []
     private let executor = FileExecutor()
-    private let store = HistoryStore.applicationSupport()
+    private let store: HistoryStore
     private var watcher: FolderWatcher?
     private var scanTask: Task<Void, Never>?
     private var resumeTask: Task<Void, Never>?
@@ -49,6 +49,13 @@ final class AppModel {
 
     init() {
         settings = AppSettings.load()
+        do {
+            store = try HistoryStore.applicationSupport()
+        } catch {
+            // Keep working without saved history rather than refuse to run.
+            store = HistoryStore()
+            lastError = String(localized: "History couldn’t be opened, so this session’s actions won’t be saved: \(error.localizedDescription)")
+        }
         summaryScheduler = WeeklySummaryScheduler(
             history: { [unowned self] in history },
             onOpen: { [unowned self] in summaryWindowRequest += 1 }
@@ -77,7 +84,11 @@ final class AppModel {
     // MARK: - Scanning
 
     func start() async {
-        history = await store.load()
+        do {
+            history = try await store.load()
+        } catch {
+            lastError = String(localized: "Couldn’t load history: \(error.localizedDescription)")
+        }
         summaryScheduler?.reschedule()
         if DebugOptions.sendsWeeklySummaryAtLaunch { await summaryScheduler?.deliver() }
         startWatching()
@@ -177,7 +188,11 @@ final class AppModel {
         history.insert(contentsOf: applied.reversed(), at: 0)
         lastError = failures.first
         pendingConfirmation = nil
-        try? await store.save(history)
+        do {
+            try await store.append(applied)
+        } catch {
+            lastError = String(localized: "The sweep worked, but it couldn’t be saved to History: \(error.localizedDescription)")
+        }
     }
 
     func apply(ids: Set<URL>) async {
@@ -204,7 +219,7 @@ final class AppModel {
             if let index = history.firstIndex(where: { $0.id == entry.id }) {
                 history[index].undone = true
             }
-            try? await store.save(history)
+            try? await store.setUndone(entry.id)
             // An undone item shouldn't be swept straight back up.
             skipped.insert(entry.originalURL)
             await scan()
