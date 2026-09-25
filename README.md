@@ -4,16 +4,17 @@
 
 # Downsweep
 
-**Your Downloads folder, kept tidy without writing a single rule.**
+**Downloads, swept clean.**
 
-A native macOS menu bar app that spots the installers, duplicates and forgotten files piling up in Downloads, and sweeps them away safely.
+Installers, duplicates and forgotten files, cleared from your menu bar.<br>
+A native macOS menu bar app. Free and open source, for macOS 26 Tahoe.
 
 [![Latest release](https://img.shields.io/github/v/release/muhghazaliakbar/downsweep?label=release&color=0A84FF)](https://github.com/muhghazaliakbar/downsweep/releases/latest)
 [![CI](https://github.com/muhghazaliakbar/downsweep/actions/workflows/ci.yml/badge.svg)](https://github.com/muhghazaliakbar/downsweep/actions/workflows/ci.yml)
 ![macOS 26+](https://img.shields.io/badge/macOS-26%2B-111111?logo=apple)
 [![License: MIT](https://img.shields.io/github/license/muhghazaliakbar/downsweep?color=34C759)](LICENSE)
 
-[**Download**](https://github.com/muhghazaliakbar/downsweep/releases/latest) · [Features](#features) · [How it works](#how-it-works) · [Privacy](#privacy--safety) · [Roadmap](#roadmap)
+[**Download for Mac**](https://github.com/muhghazaliakbar/downsweep/releases/latest) · [Website](https://downsweep.justghali.dev) · [Features](#features) · [Install](#install) · [Privacy](#nothing-is-ever-deleted) · [FAQ](#faq)
 
 <br>
 
@@ -23,19 +24,23 @@ A native macOS menu bar app that spots the installers, duplicates and forgotten 
 
 ## Features
 
+**Four kinds of clutter. Found on its own.**
+
 | | |
 | --- | --- |
-| 📦 **Installers you've already used** | Looks inside DMG, ZIP and PKG files. If the app is already installed (same version or newer), the installer can go. |
-| 👯 **Duplicate downloads** | Finds `report (1).pdf` when it's byte-for-byte the same as `report.pdf`, confirmed with SHA-256. |
-| 🧭 **Sort by source** | Browsers record where each download came from. Send `mail.google.com` files to Attachments, `github.com` files to your code folder. |
-| 🕰️ **Stale files** | Not opened in 30 days? It gets a Finder "Stale" tag. Still untouched 14 days later, Downsweep suggests the Trash. |
-| 🗂️ **Review like Finder** | Filter by kind, sort by name, date or size, Quick Look any file, and pin the ones that should never move. |
-| 📊 **Weekly summary** | A Monday notification with what was cleaned, plus a card you can share. |
+| 📦 **Installers** | Already installed? The installer can go. Downsweep looks inside DMG, ZIP and PKG files and compares them with the apps you have (same version or newer). |
+| 👯 **Duplicates** | Byte-for-byte copies, verified. `report (1).pdf` is only flagged when it matches `report.pdf` exactly, confirmed with SHA-256. |
+| 🧭 **Sort by source** | Files go back where they came from. Browsers record each download's origin, so `mail.google.com` files can go to Attachments and `github.com` files to your code folder. |
+| 🕰️ **Stale files** | Untouched for a month? Tagged, then trashed. After 30 days unopened a file gets a Finder "Stale" tag; 14 days later Downsweep suggests the Trash. |
+
+The **Review window** works like Finder: select rows, apply, and undo anytime. Filter by kind, sort by name, date or size, Quick Look any file, and pin or skip the ones that should stay. A **weekly summary** notification every Monday shows what was cleaned, with a card you can share.
 
 > [!IMPORTANT]
 > **Nothing is ever deleted.** Everything goes to the Trash, and every action can be undone from History.
 
 ## Install
+
+Up and running in a minute. Requires macOS 26 Tahoe or later.
 
 **Homebrew**
 
@@ -43,12 +48,16 @@ A native macOS menu bar app that spots the installers, duplicates and forgotten 
 brew install --cask muhghazaliakbar/tap/downsweep
 ```
 
-**Or download** the latest DMG from [Releases](https://github.com/muhghazaliakbar/downsweep/releases/latest) and drag it to Applications.
+**Or download the DMG** from [Releases](https://github.com/muhghazaliakbar/downsweep/releases/latest) and drag Downsweep to Applications.
 
-Downsweep updates itself from GitHub Releases (Sparkle). It needs macOS 26 Tahoe or later.
+Downsweep auto-updates via Sparkle, straight from GitHub Releases.
 
 > [!NOTE]
-> **Not notarized yet.** The first time you open Downsweep, macOS blocks it. Open **System Settings → Privacy & Security** and click **Open Anyway**. Updates install without asking again.
+> **First launch.** Downsweep isn't notarized yet, so macOS blocks it the first time:
+>
+> 1. Open Downsweep.
+> 2. Go to **System Settings → Privacy & Security**.
+> 3. Click **Open Anyway**, once. Updates install without asking again.
 
 ## How it works
 
@@ -78,12 +87,12 @@ flowchart LR
 
 Installers that are already installed and exact duplicates skip the wait: after a one-hour grace period, they're suggested right away.
 
-## Privacy & safety
+## Nothing is ever deleted
 
-- 🔒 **Local only.** No analytics, no accounts, and your files never leave your Mac. The only network access is Sparkle checking GitHub for a new version, which you can turn off in Settings → About.
-- 🛡️ **Careful by default.** Only the top level of the watched folder is touched. Anything that changed in the last 2 minutes (still downloading, copying or unpacking) is left alone.
-- ✅ **Checked twice.** Right before acting, each item is re-checked: files must still be the same size, and nothing inside a folder may have changed since the scan.
-- ↩️ **Always reversible.** Items go to the Trash, never straight to deletion, and History can undo them while they're still there.
+- 🔒 **Stays on your Mac.** No analytics, no accounts, and your files never leave your Mac. The only network access is Sparkle checking GitHub for a new version, which you can turn off in Settings → About.
+- 🛡️ **Top level only.** Only the top level of the watched folder is touched. Anything that changed in the last 2 minutes (still downloading, copying or unpacking) is left alone.
+- ✅ **Re-checked before acting.** Right before acting, each item is checked again: files must still be the same size, and nothing inside a folder may have changed since the scan.
+- ↩️ **Undo from History.** Items go to the Trash, never straight to deletion, and History can undo them while they're still there.
 
 Downsweep ships without the App Sandbox. It runs `hdiutil` and `pkgutil` to look inside installers, and those tools don't work reliably from a sandboxed process.
 
@@ -114,6 +123,36 @@ Downsweep ships without the App Sandbox. It runs `hdiutil` and `pkgutil` to look
 </details>
 
 Have an idea? [Open an issue](https://github.com/muhghazaliakbar/downsweep/issues).
+
+## FAQ
+
+<details>
+<summary><b>Is Downsweep free?</b></summary>
+
+Yes. It's free and open source under the MIT License. If it saves you some tidying time, you can [buy the developer a coffee](#support).
+
+</details>
+
+<details>
+<summary><b>Will it delete my files?</b></summary>
+
+No. Everything goes to the Trash, never straight to deletion, and every action can be undone from History while the item is still in the Trash.
+
+</details>
+
+<details>
+<summary><b>Why does macOS block it the first time?</b></summary>
+
+Downsweep isn't notarized yet. Open **System Settings → Privacy & Security** and click **Open Anyway**. Updates install without asking again.
+
+</details>
+
+<details>
+<summary><b>Does it collect any data?</b></summary>
+
+No analytics and no accounts. Your files never leave your Mac. The only network access is Sparkle checking GitHub for updates, which you can turn off in Settings → About.
+
+</details>
 
 ## Development
 
